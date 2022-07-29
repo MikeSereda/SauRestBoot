@@ -68,11 +68,14 @@ public class DataRestController {
     @GetMapping("/test")
     public HashMap<String,Object> testMethod3(@RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced)
     {
-        ReducedParameterSet reducedParameterSet = new ReducedParameterSet();
-        ParameterSet parameterSet = new ParameterSet();
+        ReducedParameterSet parameterSet;
         if (reduced){
-            return reducedParameterSet.getParameters();
+            parameterSet = new ReducedParameterSet();
+            return parameterSet.getParameters();
         }
-        return parameterSet.getParameters();
+        else{
+            parameterSet = new ParameterSet();
+            return parameterSet.getParameters();
+        }
     }
 }
