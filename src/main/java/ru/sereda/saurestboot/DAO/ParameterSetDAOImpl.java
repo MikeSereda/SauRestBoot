@@ -20,7 +20,6 @@ public class ParameterSetDAOImpl implements ParameterSetDAO{
             {
                 parameterSetList.add(new ParameterSet("param1 for "+i,"param2 for "+i,"param3 for "+i,"param4 for "+i,"param5 for "+i,"param6 for "+i));
             }
-            System.out.println(parameterSetList.get(i).toString());
         }
         return parameterSetList;
     }
