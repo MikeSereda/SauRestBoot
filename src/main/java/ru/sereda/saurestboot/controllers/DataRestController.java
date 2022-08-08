@@ -23,7 +23,7 @@ public class DataRestController {
             @RequestParam(required = false,name = "deviceType",defaultValue = "cdm 570l") String deviceType)
     {
         HashMap<String,String> testHashMap = new HashMap<>();
-        testHashMap.put("Test key1", deviceType);
+        testHashMap.put("Device 1", deviceType);
         return testHashMap;
     }
 
@@ -38,19 +38,14 @@ public class DataRestController {
         HashMap<String,String> params = new HashMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
-        if (modemId!=null){
-            params.put("modemId",modemId);
-        }
-        else {
+        if (modemId == null){
             params.put("modemId","multiple_modems");
         }
-        params.put("limit", String.valueOf(limit));
-        if (reduced){
-            System.out.println("reduced is true");
-        }
         else {
-            System.out.println("reduced is false");
+            params.put("modemId",modemId);
         }
+        params.put("limit", String.valueOf(limit));
+        params.put("reduced",String.valueOf(reduced));
         return params;
     }
 
@@ -59,7 +54,6 @@ public class DataRestController {
             @RequestParam(name = "limit", required = false, defaultValue = "${dashboard.limit}") int limit,
             @RequestBody ArrayList<LastPair> lastPairs
     ){
-        System.out.println(limit);
         return lastPairs;
     }
 
@@ -67,25 +61,7 @@ public class DataRestController {
     public HashMap<String,String> testMethod2(@PathVariable("deviceId") String deviceId)
     {
         HashMap<String,String> testHashMap = new HashMap<>();
-        testHashMap.put("Test key1", deviceId);
+        testHashMap.put(deviceId, "Device N");
         return testHashMap;
-    }
-
-    @GetMapping("/test")
-    public HashMap<String,Object> testMethod3(@RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced)
-    {
-        ReducedParameterSet parameterSet;
-        if (reduced){
-            parameterSet = new ReducedParameterSet("p1","p2","p3");
-        }
-        else{
-            parameterSet = new ParameterSet("p1","p2","p3","p4","p5","p6");
-        }
-        return parameterSet.getParameters();
-    }
-
-    @GetMapping("/test-parameter-set")
-    public List<ReducedParameterSet> testMethod4(@RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
-        return parameterSetService.getParameters(reduced);
     }
 }
