@@ -24,4 +24,6 @@ public class LastPair {
         this.modemId = modemId;
         this.lastUpTime = lastUpTime;
     }
+
+
 }

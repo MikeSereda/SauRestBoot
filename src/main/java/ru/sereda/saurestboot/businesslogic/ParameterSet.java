@@ -1,46 +1,141 @@
 package ru.sereda.saurestboot.businesslogic;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class ParameterSet extends ReducedParameterSet{
-    public String param4 = "param4value";
-    public String param5 = "param5value";
-    public String param6 = "param6value";
 
-    public ParameterSet(String param1, String param2, String param3, String param4, String param5, String param6) {
-        super(param1, param2, param3);
-        this.param4 = param4;
-        this.param5 = param5;
-        this.param6 = param6;
+    private int rsl;
+    private int temperature;
+    private float txPowerLevelIncrease;
+    private float ber;
+    private String unitAlarm;
+    private String txAlarm;
+    private String rxAlarm;
+    private String oduAlarm;
+
+    public ParameterSet() {
+    }
+
+    public ParameterSet(float ebNo,
+                        float ebNoRemote,
+                        LocalDateTime timestampWotz,
+                        int rsl,
+                        int temperature,
+                        float txPowerLevelIncrease,
+                        float ber,
+                        String unitAlarm,
+                        String txAlarm,
+                        String rxAlarm,
+                        String oduAlarm) {
+        super(ebNo, ebNoRemote, timestampWotz);
+        this.rsl = rsl;
+        this.temperature = temperature;
+        this.txPowerLevelIncrease = txPowerLevelIncrease;
+        this.ber = ber;
+        this.unitAlarm = unitAlarm;
+        this.txAlarm = txAlarm;
+        this.rxAlarm = rxAlarm;
+        this.oduAlarm = oduAlarm;
     }
 
     @Override
-    public HashMap<String, Object> getParameters() {
+    public HashMap<String, Object> getParametersMap() {
         HashMap<String, Object> parametersMap = new HashMap<>();
-        parametersMap.put("param1",super.param1);
-        parametersMap.put("param2",super.param2);
-        parametersMap.put("param3",super.param3);
-        parametersMap.put("param4",param4);
-        parametersMap.put("param5",param5);
-        parametersMap.put("param6",param6);
+        parametersMap.put("timestampWotz",super.timestampWotz);
+        parametersMap.put("ebNo",super.ebNo);
+        parametersMap.put("ebNoRemote",super.ebNoRemote);
+        parametersMap.put("rsl",rsl);
+        parametersMap.put("temperature",temperature);
+        parametersMap.put("txPowerLevelIncrease",txPowerLevelIncrease);
+        parametersMap.put("ber",ber);
+        parametersMap.put("unitAlarm",unitAlarm);
+        parametersMap.put("txAlarm",txAlarm);
+        parametersMap.put("rxAlarm",rxAlarm);
+        parametersMap.put("oduAlarm",oduAlarm);
         return parametersMap;
     }
 
     @Override
     public String toString() {
         return "ParameterSet{" +
-                "param4='" + param4 + '\'' +
-                ", param5='" + param5 + '\'' +
-                ", param6='" + param6 + '\'' +
-                ", param1='" + param1 + '\'' +
-                ", param2='" + param2 + '\'' +
-                ", param3='" + param3 + '\'' +
+                "rsl=" + rsl +
+                ", temperature=" + temperature +
+                ", txPowerLevelIncrease=" + txPowerLevelIncrease +
+                ", ber=" + ber +
+                ", unitAlarm='" + unitAlarm + '\'' +
+                ", txAlarm='" + txAlarm + '\'' +
+                ", rxAlarm='" + rxAlarm + '\'' +
+                ", oduAlarm='" + oduAlarm + '\'' +
+                ", ebNo=" + ebNo +
+                ", ebNoRemote=" + ebNoRemote +
+                ", timestampWotz=" + timestampWotz +
                 '}';
     }
 
-    //    public ParameterSet(HashMap<String, Object> valuesMap) {
-//        super(valuesMap);
-//    }
+    public int getRsl() {
+        return rsl;
+    }
+
+    public void setRsl(int rsl) {
+        this.rsl = rsl;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public float getTxPowerLevelIncrease() {
+        return txPowerLevelIncrease;
+    }
+
+    public void setTxPowerLevelIncrease(float txPowerLevelIncrease) {
+        this.txPowerLevelIncrease = txPowerLevelIncrease;
+    }
+
+    public float getBer() {
+        return ber;
+    }
+
+    public void setBer(float ber) {
+        this.ber = ber;
+    }
+
+    public String getUnitAlarm() {
+        return unitAlarm;
+    }
+
+    public void setUnitAlarm(String unitAlarm) {
+        this.unitAlarm = unitAlarm;
+    }
+
+    public String getTxAlarm() {
+        return txAlarm;
+    }
+
+    public void setTxAlarm(String txAlarm) {
+        this.txAlarm = txAlarm;
+    }
+
+    public String getRxAlarm() {
+        return rxAlarm;
+    }
+
+    public void setRxAlarm(String rxAlarm) {
+        this.rxAlarm = rxAlarm;
+    }
+
+    public String getOduAlarm() {
+        return oduAlarm;
+    }
+
+    public void setOduAlarm(String oduAlarm) {
+        this.oduAlarm = oduAlarm;
+    }
 }

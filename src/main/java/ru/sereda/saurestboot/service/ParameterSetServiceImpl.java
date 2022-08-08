@@ -3,6 +3,8 @@ package ru.sereda.saurestboot.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.DAO.ParameterSetDAO;
+import ru.sereda.saurestboot.businesslogic.ParameterCarrier;
+import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public class ParameterSetServiceImpl implements ParameterSetService{
     ParameterSetDAO parameterSetDAO;
 
     @Override
-    public List<ReducedParameterSet> getParameters(boolean reduced) {
+    public List<ParameterCarrier> getParameters(boolean reduced) {
         return parameterSetDAO.getParameters(reduced);
     }
 }
