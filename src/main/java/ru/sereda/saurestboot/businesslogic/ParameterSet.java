@@ -7,17 +7,14 @@ import java.util.HashMap;
 
 public class ParameterSet extends ReducedParameterSet{
 
-    private int rsl;
-    private int temperature;
-    private float txPowerLevelIncrease;
-    private float ber;
-    private String unitAlarm;
-    private String txAlarm;
-    private String rxAlarm;
-    private String oduAlarm;
-
-    public ParameterSet() {
-    }
+    private final int rsl;
+    private final int temperature;
+    private final float txPowerLevelIncrease;
+    private final float ber;
+    private final String unitAlarm;
+    private final String txAlarm;
+    private final String rxAlarm;
+    private final String oduAlarm;
 
     public ParameterSet(float ebNo,
                         float ebNoRemote,
@@ -44,9 +41,9 @@ public class ParameterSet extends ReducedParameterSet{
     @Override
     public HashMap<String, Object> getParametersMap() {
         HashMap<String, Object> parametersMap = new HashMap<>();
-        parametersMap.put("timestampWotz",super.timestampWotz);
-        parametersMap.put("ebNo",super.ebNo);
-        parametersMap.put("ebNoRemote",super.ebNoRemote);
+        parametersMap.put("timestampWotz",super.getTimestampWotz());
+        parametersMap.put("ebNo",super.getEbNo());
+        parametersMap.put("ebNoRemote",super.getEbNoRemote());
         parametersMap.put("rsl",rsl);
         parametersMap.put("temperature",temperature);
         parametersMap.put("txPowerLevelIncrease",txPowerLevelIncrease);
@@ -69,9 +66,9 @@ public class ParameterSet extends ReducedParameterSet{
                 ", txAlarm='" + txAlarm + '\'' +
                 ", rxAlarm='" + rxAlarm + '\'' +
                 ", oduAlarm='" + oduAlarm + '\'' +
-                ", ebNo=" + ebNo +
-                ", ebNoRemote=" + ebNoRemote +
-                ", timestampWotz=" + timestampWotz +
+                ", ebNo=" + super.getEbNo() +
+                ", ebNoRemote=" + super.getEbNoRemote() +
+                ", timestampWotz=" + super.getTimestampWotz()+
                 '}';
     }
 
@@ -79,63 +76,31 @@ public class ParameterSet extends ReducedParameterSet{
         return rsl;
     }
 
-    public void setRsl(int rsl) {
-        this.rsl = rsl;
-    }
-
     public int getTemperature() {
         return temperature;
-    }
-
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
     }
 
     public float getTxPowerLevelIncrease() {
         return txPowerLevelIncrease;
     }
 
-    public void setTxPowerLevelIncrease(float txPowerLevelIncrease) {
-        this.txPowerLevelIncrease = txPowerLevelIncrease;
-    }
-
     public float getBer() {
         return ber;
-    }
-
-    public void setBer(float ber) {
-        this.ber = ber;
     }
 
     public String getUnitAlarm() {
         return unitAlarm;
     }
 
-    public void setUnitAlarm(String unitAlarm) {
-        this.unitAlarm = unitAlarm;
-    }
-
     public String getTxAlarm() {
         return txAlarm;
-    }
-
-    public void setTxAlarm(String txAlarm) {
-        this.txAlarm = txAlarm;
     }
 
     public String getRxAlarm() {
         return rxAlarm;
     }
 
-    public void setRxAlarm(String rxAlarm) {
-        this.rxAlarm = rxAlarm;
-    }
-
     public String getOduAlarm() {
         return oduAlarm;
-    }
-
-    public void setOduAlarm(String oduAlarm) {
-        this.oduAlarm = oduAlarm;
     }
 }

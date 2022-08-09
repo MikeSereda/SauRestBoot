@@ -7,16 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NON_PRIVATE)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class ReducedParameterSet implements ParameterCarrier{
 
-    protected float ebNo;
-    protected float ebNoRemote;
-
-    protected LocalDateTime timestampWotz;
-
-    public ReducedParameterSet() {
-    }
+    private final float ebNo;
+    private final float ebNoRemote;
+    private final LocalDateTime timestampWotz;
 
     public ReducedParameterSet(float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
         this.ebNo = ebNo;
@@ -37,25 +33,13 @@ public class ReducedParameterSet implements ParameterCarrier{
         return ebNo;
     }
 
-    public void setEbNo(float ebNo) {
-        this.ebNo = ebNo;
-    }
-
     public float getEbNoRemote() {
         return ebNoRemote;
-    }
-
-    public void setEbNoRemote(float ebNoRemote) {
-        this.ebNoRemote = ebNoRemote;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getTimestampWotz() {
         return timestampWotz;
-    }
-
-    public void setTimestampWotz(LocalDateTime timestampWotz) {
-        this.timestampWotz = timestampWotz;
     }
 
     @Override
