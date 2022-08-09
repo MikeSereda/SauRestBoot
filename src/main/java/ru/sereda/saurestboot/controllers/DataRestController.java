@@ -2,14 +2,10 @@ package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.sereda.saurestboot.businesslogic.LastPair;
-import ru.sereda.saurestboot.businesslogic.ParameterSet;
-import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 import ru.sereda.saurestboot.service.ParameterSetService;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -50,9 +46,10 @@ public class DataRestController {
     }
 
     @PostMapping("/refresh-modem-graphs")
-    public ArrayList<LastPair>refreshModemGraphs(
+    public HashMap<String, LocalDateTime> refreshModemGraphs(
             @RequestParam(name = "limit", required = false, defaultValue = "${dashboard.limit}") int limit,
-            @RequestBody ArrayList<LastPair> lastPairs
+            @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced,
+            @RequestBody HashMap<String, LocalDateTime> lastPairs
     ){
         return lastPairs;
     }
