@@ -2,10 +2,13 @@ package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.businesslogic.Session;
 import ru.sereda.saurestboot.service.ParameterSetService;
+import ru.sereda.saurestboot.service.SessionService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -13,6 +16,9 @@ public class DataRestController {
 
     @Autowired
     ParameterSetService parameterSetService;
+
+    @Autowired
+    SessionService sessionService;
 
     @GetMapping("/devices")
     public HashMap<String,String> testMethod(
@@ -27,14 +33,14 @@ public class DataRestController {
     public HashMap<String,String> paramsBetween(
             @RequestParam(name = "startTime") String startTime,
             @RequestParam(name = "endTime") String endTime,
-            @RequestParam(name = "modemId", required = false) String modemId,
+            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId,
             @RequestParam(name = "limit", required = false, defaultValue = "${dashboard.limit}") int limit,
             @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced
     ){
         HashMap<String,String> params = new HashMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
-        if (modemId == null){
+        if (modemId.isEmpty()){
             params.put("modemId","multiple_modems");
         }
         else {
@@ -60,5 +66,28 @@ public class DataRestController {
         HashMap<String,String> testHashMap = new HashMap<>();
         testHashMap.put(deviceId, "Device N");
         return testHashMap;
+    }
+
+    @GetMapping("/sessions")
+    public List<Session> testMethod5(
+            @RequestParam(name = "startTime") String startTime,
+            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
+            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId){
+        if (endTime.isEmpty()){
+            if (modemId.isEmpty()){
+                return sessionService.getSessions(LocalDateTime.parse(startTime));
+            }
+            else {
+                return sessionService.getSessions(modemId,LocalDateTime.parse(startTime));
+            }
+        }
+        else{
+            if (modemId.isEmpty()){
+                return sessionService.getSessions(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+            else {
+                return sessionService.getSessions(modemId,LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+        }
     }
 }
