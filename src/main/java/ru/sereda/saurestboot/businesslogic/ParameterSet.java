@@ -1,11 +1,14 @@
 package ru.sereda.saurestboot.businesslogic;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParameterSet extends ReducedParameterSet{
+
 
     private final int rsl;
     private final int temperature;
@@ -26,8 +29,9 @@ public class ParameterSet extends ReducedParameterSet{
                         String unitAlarm,
                         String txAlarm,
                         String rxAlarm,
-                        String oduAlarm) {
-        super(ebNo, ebNoRemote, timestampWotz);
+                        String oduAlarm,
+                        String modemId) {
+        super(modemId, ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
         this.temperature = temperature;
         this.txPowerLevelIncrease = txPowerLevelIncrease;
@@ -102,5 +106,25 @@ public class ParameterSet extends ReducedParameterSet{
 
     public String getOduAlarm() {
         return oduAlarm;
+    }
+
+    static public List<ParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
+        List<ParameterSet> parameterSetList = new ArrayList<>();
+        for (Map<String,Object> map : mapList){
+            parameterSetList.add(new ParameterSet(
+                    (float) map.get("ebNo"),
+                    (float) map.get("ebNoRemote"),
+                    ((Timestamp)map.get("timestampWotz")).toLocalDateTime(),
+                    (int) map.get("rsl"),
+                    (int) map.get("temperature"),
+                    (float) map.get("txPowerLevelIncrease"),
+                    (float) map.get("ber"),
+                    (String) map.get("unitAlarm"),
+                    (String) map.get("txAlarm"),
+                    (String) map.get("rxAlarm"),
+                    (String) map.get("oduAlarm"),
+                    (String) map.get("modemId")));
+        }
+        return parameterSetList;
     }
 }
