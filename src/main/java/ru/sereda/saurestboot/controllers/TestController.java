@@ -47,7 +47,25 @@ public class TestController {
     }
 
     @GetMapping("/test-sessions")
-    public List<Session> testMethod5(){
-        return sessionService.getSessions("cdm111",LocalDateTime.parse("2022-08-16T21:55:52"),LocalDateTime.parse("2022-08-16T21:56:55"));
+    public List<Session> testMethod5(
+            @RequestParam(name = "startTime") String startTime,
+            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
+            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId){
+        if (endTime.isEmpty()){
+            if (modemId.isEmpty()){
+                return sessionService.getSessions(LocalDateTime.parse(startTime));
+            }
+            else {
+                return sessionService.getSessions(modemId,LocalDateTime.parse(startTime));
+            }
+        }
+        else{
+            if (modemId.isEmpty()){
+                return sessionService.getSessions(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+            else {
+                return sessionService.getSessions(modemId,LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+        }
     }
 }
