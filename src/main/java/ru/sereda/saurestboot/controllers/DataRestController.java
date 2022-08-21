@@ -1,9 +1,12 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.businesslogic.Device;
 import ru.sereda.saurestboot.businesslogic.Session;
-import ru.sereda.saurestboot.service.ModemParameterSetService;
+import ru.sereda.saurestboot.service.DeviceService;
+import ru.sereda.saurestboot.service.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.SessionService;
 
 import java.time.LocalDateTime;
@@ -15,19 +18,13 @@ import java.util.List;
 public class DataRestController {
 
     @Autowired
-    ModemParameterSetService parameterSetService;
+    DeviceParameterSetService parameterSetService;
 
     @Autowired
     SessionService sessionService;
 
-    @GetMapping("/devices")
-    public HashMap<String,String> testMethod(
-            @RequestParam(required = false,name = "deviceType",defaultValue = "cdm 570l") String deviceType)
-    {
-        HashMap<String,String> testHashMap = new HashMap<>();
-        testHashMap.put("Device 1", deviceType);
-        return testHashMap;
-    }
+    @Autowired
+    DeviceService deviceService;
 
     @GetMapping("/params-between")
     public HashMap<String,String> paramsBetween(
@@ -60,19 +57,26 @@ public class DataRestController {
         return lastPairs;
     }
 
-    @GetMapping("/devices/{deviceId}")
-    public HashMap<String,String> testMethod2(@PathVariable("deviceId") String deviceId)
-    {
-        HashMap<String,String> testHashMap = new HashMap<>();
-        testHashMap.put(deviceId, "Device N");
-        return testHashMap;
-    }
-
     @GetMapping("/sessions")
     public List<Session> testMethod5(
             @RequestParam(name = "startTime") String startTime,
             @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
             @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId) {
         return sessionService.getSessions(modemId,startTime,endTime);
+    }
+
+    @GetMapping("/devices/{deviceId}")
+    public ResponseEntity<Device> testMethod2(@PathVariable("deviceId") String deviceId){
+        return deviceService.getDevice(deviceId);
+    }
+
+    @GetMapping("/devices")
+    public List<Device> testMethod3(@RequestParam(name = "type",required = false,defaultValue = "") String deviceType){
+        return deviceService.getDevices(deviceType);
+    }
+
+    @GetMapping("/device-types")
+    public List<String> testMethod4(){
+        return deviceService.getDeviceTypes();
     }
 }

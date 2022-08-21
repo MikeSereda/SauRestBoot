@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModemParameterSet extends ModemReducedParameterSet {
+public class DeviceParameterSet extends DeviceReducedParameterSet {
 
 
     private final int rsl;
@@ -19,18 +19,18 @@ public class ModemParameterSet extends ModemReducedParameterSet {
     private final String rxAlarm;
     private final String oduAlarm;
 
-    public ModemParameterSet(float ebNo,
-                             float ebNoRemote,
-                             LocalDateTime timestampWotz,
-                             int rsl,
-                             int temperature,
-                             float txPowerLevelIncrease,
-                             float ber,
-                             String unitAlarm,
-                             String txAlarm,
-                             String rxAlarm,
-                             String oduAlarm,
-                             String modemId) {
+    public DeviceParameterSet(float ebNo,
+                              float ebNoRemote,
+                              LocalDateTime timestampWotz,
+                              int rsl,
+                              int temperature,
+                              float txPowerLevelIncrease,
+                              float ber,
+                              String unitAlarm,
+                              String txAlarm,
+                              String rxAlarm,
+                              String oduAlarm,
+                              String modemId) {
         super(modemId, ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
         this.temperature = temperature;
@@ -61,7 +61,7 @@ public class ModemParameterSet extends ModemReducedParameterSet {
 
     @Override
     public String toString() {
-        return "ModemParameterSet{" +
+        return "DeviceParameterSet{" +
                 "rsl=" + rsl +
                 ", temperature=" + temperature +
                 ", txPowerLevelIncrease=" + txPowerLevelIncrease +
@@ -108,10 +108,10 @@ public class ModemParameterSet extends ModemReducedParameterSet {
         return oduAlarm;
     }
 
-    static public List<ModemParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
-        List<ModemParameterSet> parameterSetList = new ArrayList<>();
+    static public List<DeviceParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
+        List<DeviceParameterSet> parameterSetList = new ArrayList<>();
         for (Map<String,Object> map : mapList){
-            parameterSetList.add(new ModemParameterSet(
+            parameterSetList.add(new DeviceParameterSet(
                     (float) map.get("ebNo"),
                     (float) map.get("ebNoRemote"),
                     ((Timestamp)map.get("timestampWotz")).toLocalDateTime(),
