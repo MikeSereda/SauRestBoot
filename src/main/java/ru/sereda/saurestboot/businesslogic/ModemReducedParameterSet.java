@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
-public class ReducedParameterSet implements ParameterCarrier{
+public class ModemReducedParameterSet implements ParameterSet {
 
     private String modemId;
     private final float ebNo;
     private final float ebNoRemote;
     private final LocalDateTime timestampWotz;
 
-    public ReducedParameterSet(String modemId, float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
+    public ModemReducedParameterSet(String modemId, float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
         this.ebNo = ebNo;
         this.ebNoRemote = ebNoRemote;
         this.timestampWotz = timestampWotz;
@@ -58,17 +58,17 @@ public class ReducedParameterSet implements ParameterCarrier{
 
     @Override
     public String toString() {
-        return "ReducedParameterSet{" +
+        return "ModemReducedParameterSet{" +
                 "ebNo=" + ebNo +
                 ", ebNoRemote=" + ebNoRemote +
                 ", timestampWotz=" + timestampWotz +
                 '}';
     }
 
-    static public List<ReducedParameterSet> reducedParameterSetWrapper(List<Map<String, Object>> mapList) {
-        List<ReducedParameterSet> parameterSetList = new ArrayList<>();
+    static public List<ModemReducedParameterSet> reducedParameterSetWrapper(List<Map<String, Object>> mapList) {
+        List<ModemReducedParameterSet> parameterSetList = new ArrayList<>();
         for (Map<String,Object> map : mapList){
-            parameterSetList.add(new ReducedParameterSet(
+            parameterSetList.add(new ModemReducedParameterSet(
                     (String) map.get("modemId"),
                     (float) map.get("ebNo"),
                     (float) map.get("ebNoRemote"),

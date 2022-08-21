@@ -1,7 +1,6 @@
 package ru.sereda.saurestboot.businesslogic;
 
-public class Modem extends Device{
-    private static String deviceType="cdm 570l";
+public class DeviceImpl implements Device{
     private String name;
     private String id;
     private String ip;
@@ -9,15 +8,7 @@ public class Modem extends Device{
     private String description;
     private String location;
 
-    public Modem() {
-    }
-
-    public static String getDeviceType() {
-        return deviceType;
-    }
-
-    public static void setDeviceType(String deviceType) {
-        Modem.deviceType = deviceType;
+    public DeviceImpl() {
     }
 
     public String getName() {

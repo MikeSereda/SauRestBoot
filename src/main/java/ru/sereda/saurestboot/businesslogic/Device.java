@@ -1,5 +1,7 @@
 package ru.sereda.saurestboot.businesslogic;
 
-public class Device {
-    private static String deviceType;
+import java.util.List;
+
+public interface Device {
+
 }

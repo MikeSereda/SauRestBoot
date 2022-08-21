@@ -15,22 +15,37 @@ public class SessionServiceImpl implements SessionService{
     SessionDAO sessionDAO;
 
     @Override
-    public List<Session> getSessions(String modemId, LocalDateTime startTime) {
-        return sessionDAO.getSessions(modemId, startTime);
+    public List<Session> getSessions(String modemId, String startTime, String endTime) {
+        if (endTime.isEmpty()){
+            if (modemId.isEmpty()){
+                return sessionDAO.getSessions(LocalDateTime.parse(startTime));
+            }
+            else {
+                return sessionDAO.getSessions(modemId,LocalDateTime.parse(startTime));
+            }
+        }
+        else{
+            if (modemId.isEmpty()){
+                return sessionDAO.getSessions(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+            else {
+                return sessionDAO.getSessions(modemId,LocalDateTime.parse(startTime),LocalDateTime.parse(endTime));
+            }
+        }
     }
-
-    @Override
-    public List<Session> getSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
-        return sessionDAO.getSessions(modemId, startTime, endTime);
-    }
-
-    @Override
-    public List<Session> getSessions(LocalDateTime startTime) {
-        return sessionDAO.getSessions(startTime);
-    }
-
-    @Override
-    public List<Session> getSessions(LocalDateTime startTime, LocalDateTime endTime) {
-        return sessionDAO.getSessions(startTime, endTime);
-    }
+//
+//    @Override
+//    public List<Session> getSessions(String modemId, LocalDateTime startTime) {
+//        return sessionDAO.getSessions(modemId, startTime);
+//    }
+//
+//    @Override
+//    public List<Session> getSessions(LocalDateTime startTime) {
+//        return sessionDAO.getSessions(startTime);
+//    }
+//
+//    @Override
+//    public List<Session> getSessions(LocalDateTime startTime, LocalDateTime endTime) {
+//        return sessionDAO.getSessions(startTime, endTime);
+//    }
 }
