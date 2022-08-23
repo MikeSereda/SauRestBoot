@@ -25,9 +25,16 @@ public class DeviceDAOImpl implements DeviceDAO {
 
     @Override
     public List<String> getDeviceTypes() {
-        String sql = "SELECT DISTINCT type FROM devices";
+        String sql = "SELECT DISTINCT type FROM devices order by type";
         List<String> types = jdbcTemplate.queryForList(sql,String.class);
         return types;
+    }
+
+    @Override
+    public List<String> getDeviceIds() {
+        String sql = "SELECT DISTINCT id FROM devices order by id";
+        List<String> deviceIds = jdbcTemplate.queryForList(sql,String.class);
+        return deviceIds;
     }
 
     public List<Device> getDevices(){

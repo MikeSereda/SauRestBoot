@@ -10,6 +10,7 @@ import ru.sereda.saurestboot.service.SessionService;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -36,5 +37,15 @@ public class TestController {
             parameterSet = new DeviceParameterSet(6.5f, 6.2f, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),68,24,1.3f,1f,"None","None","None","None", "cdm111");
         }
         return parameterSet.getParametersMap();
+    }
+
+    @GetMapping("/test-parameter-set")
+    public List<ParameterSet> testMethod1(
+            @RequestParam(name = "startTime") String startTime,
+            @RequestParam(name = "endTime") String endTime,
+            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId,
+            @RequestParam(name = "limit", required = false, defaultValue = "1") int limit,
+            @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
+        return parameterSetService.getParameters(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),limit);
     }
 }

@@ -8,4 +8,5 @@ public interface DeviceDAO {
     Device getDevice(String id);
     List<Device> getDevices(String deviceType);
     List<String> getDeviceTypes();
+    List<String> getDeviceIds();
 }
