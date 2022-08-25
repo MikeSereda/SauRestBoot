@@ -42,10 +42,25 @@ public class TestController {
     @GetMapping("/test-parameter-set")
     public List<ParameterSet> testMethod1(
             @RequestParam(name = "startTime") String startTime,
-            @RequestParam(name = "endTime") String endTime,
+            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
             @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId,
-            @RequestParam(name = "limit", required = false, defaultValue = "1") int limit,
+            @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
             @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
-        return parameterSetService.getParameters(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),limit);
+        if (modemId.isEmpty()){
+            if (endTime.isEmpty()){
+                return parameterSetService.getParameters(LocalDateTime.parse(startTime),reduced,limit);
+            }
+            else {
+                return parameterSetService.getParameters(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
+            }
+        }
+        else {
+            if (endTime.isEmpty()){
+                return parameterSetService.getParameters(modemId, LocalDateTime.parse(startTime),reduced,limit);
+            }
+            else {
+                return parameterSetService.getParameters(modemId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
+            }
+        }
     }
 }

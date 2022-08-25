@@ -12,12 +12,11 @@ import java.time.temporal.ChronoUnit;
 public class DeviceReducedParameterSetMapper implements RowMapper<ParameterSet> {
     @Override
     public ParameterSet mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ParameterSet parameterSet = new DeviceReducedParameterSet(
+        return new DeviceReducedParameterSet(
                 rs.getString("modemId"),
                 rs.getFloat("ebNo"),
                 rs.getFloat("ebNoRemote"),
                 rs.getTimestamp("timestampWotz").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
         );
-        return parameterSet;
     }
 }

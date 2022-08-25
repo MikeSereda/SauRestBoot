@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 
-public class DeviceParameterSetMapper implements RowMapper<ParameterSet> {
+public class DeviceParameterSetMapper extends DeviceReducedParameterSetMapper{
     @Override
     public ParameterSet mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ParameterSet parameterSet = new DeviceParameterSet(
+        return new DeviceParameterSet(
                 rs.getFloat("ebNo"),
                 rs.getFloat("ebNoRemote"),
                 rs.getTimestamp("timestampWotz").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS),
@@ -25,6 +25,5 @@ public class DeviceParameterSetMapper implements RowMapper<ParameterSet> {
                 rs.getString("oduAlarm"),
                 rs.getString("modemId")
         );
-        return parameterSet;
     }
 }

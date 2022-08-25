@@ -1,6 +1,7 @@
 package ru.sereda.saurestboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.DAO.DeviceParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
@@ -18,59 +19,14 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
     @Autowired
     DeviceService deviceService;
 
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime));
-        }
-        return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, int limit) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, limit));
-        }
-        return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, endTime));
-        }
-        return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime, int limit) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id, startTime, endTime, limit));
-        }
-        return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, boolean reduced) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, reduced));
-        }
-        return deviceParameterSets;
-    }
+    @Value("${sql.parameters.parameterset.limit}")
+    int sqlParametersetLimit;
 
     @Override
     public List<ParameterSet> getParameters(LocalDateTime startTime, boolean reduced, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
         List<ParameterSet> deviceParameterSets = new ArrayList<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
@@ -80,62 +36,31 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
     }
 
     @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime, boolean reduced) {
+    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
         List<ParameterSet> deviceParameterSets = new ArrayList<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, endTime, reduced));
+            deviceParameterSets.addAll(getParameters(id,startTime, endTime, reduced, limit));
         }
         return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime, int limit, boolean reduced) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
-        for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, endTime, limit, reduced));
-        }
-        return deviceParameterSets;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime) {
-        return parameterSetDAO.getParameters(modemId, startTime);
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, int limit) {
-        return parameterSetDAO.getParameters(modemId, startTime, limit);
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
-        return parameterSetDAO.getParameters(modemId, startTime, endTime);
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, int limit) {
-        return parameterSetDAO.getParameters(modemId, startTime, endTime, limit);
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, boolean reduced) {
-        return parameterSetDAO.getParameters(modemId, startTime, reduced);
     }
 
     @Override
     public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, boolean reduced, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
         return parameterSetDAO.getParameters(modemId, startTime, reduced, limit);
     }
 
     @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced) {
-        return parameterSetDAO.getParameters(modemId, startTime, endTime, reduced);
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, int limit, boolean reduced) {
-        return parameterSetDAO.getParameters(modemId, startTime, endTime, limit, reduced);
+    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+        return parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit);
     }
 }

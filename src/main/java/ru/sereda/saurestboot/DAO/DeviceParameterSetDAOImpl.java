@@ -25,65 +25,56 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private List<String> getDeviceIds(){
-        String sql = "SELECT DISTINCT id FROM devices";
-        List<String> deviceIds = jdbcTemplate.queryForList(sql,String.class);
-        return deviceIds;
+    @Override
+    public List<ParameterSet> getParameters(
+            String modemId,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            boolean reduced,
+            int limit)
+    {
+        String sql;
+        DeviceReducedParameterSetMapper mapper;
+        if (reduced){
+            mapper = new DeviceReducedParameterSetMapper();
+            sql = """
+                    SELECT "modemId", "timestampWotz", "ebNo", "ebNoRemote" FROM parameters WHERE "modemId"=?
+                    AND "timestampWotz">=? AND "timestampWotz"<=? ORDER BY "timestampWotz" DESC LIMIT ?
+                    """;
+        }
+        else {
+            mapper = new DeviceParameterSetMapper();
+            sql = """
+                    SELECT * FROM parameters WHERE "modemId"=? AND "timestampWotz">=? AND "timestampWotz"<=?
+                    ORDER BY "timestampWotz" DESC LIMIT ?
+                    """;
+        }
+        return jdbcTemplate.query(sql, mapper, modemId, startTime, endTime, limit);
     }
 
     @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime) {
-        String sql = "SELECT * FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceParameterSetMapper(), modemId, startTime, defaultLimit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, boolean reduced) {
-        String sql = "SELECT \"modemId\", \"timestampWotz\", \"ebNo\", \"ebNoRemote\" FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(), modemId, startTime, defaultLimit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
-        String sql = "SELECT * FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? AND \"timestampWotz\"<=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(),modemId, startTime, endTime, defaultLimit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced) {
-        String sql = "SELECT \"modemId\", \"timestampWotz\", \"ebNo\", \"ebNoRemote\" FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? AND \"timestampWotz\"<=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(),modemId, startTime, endTime, defaultLimit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, int limit) {
-        String sql = "SELECT * FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? AND \"timestampWotz\"<=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(), modemId, startTime, endTime, limit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, int limit, boolean reduced) {
-        String sql = "SELECT \"modemId\", \"timestampWotz\", \"ebNo\", \"ebNoRemote\" FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? AND \"timestampWotz\"<=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(),modemId, startTime, endTime, limit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, int limit) {
-        String sql = "SELECT * FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(),modemId, startTime, limit);
-        return parameterSetList;
-    }
-
-    @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, boolean reduced, int limit) {
-        String sql = "SELECT \"modemId\", \"timestampWotz\", \"ebNo\", \"ebNoRemote\" FROM parameters WHERE \"modemId\"=? AND \"timestampWotz\">=? ORDER BY \"timestampWotz\" DESC LIMIT ?";
-        List<ParameterSet> parameterSetList = jdbcTemplate.query(sql, new DeviceReducedParameterSetMapper(),modemId, startTime, limit);
-        return parameterSetList;
+    public List<ParameterSet> getParameters(
+            String modemId,
+            LocalDateTime startTime,
+            boolean reduced,
+            int limit)
+    {
+        String sql;
+        DeviceReducedParameterSetMapper mapper;
+        if (reduced){
+            mapper = new DeviceReducedParameterSetMapper();
+            sql = """
+                    SELECT "modemId", "timestampWotz", "ebNo", "ebNoRemote" FROM parameters WHERE "modemId"=?
+                    AND "timestampWotz">=? ORDER BY "timestampWotz" DESC LIMIT ?
+                    """;
+        }
+        else {
+            mapper = new DeviceParameterSetMapper();
+            sql = """
+                    SELECT * FROM parameters WHERE "modemId"=? AND "timestampWotz">=?
+                    ORDER BY "timestampWotz" DESC LIMIT ?
+                    """;
+        }
+        return jdbcTemplate.query(sql, mapper, modemId, startTime, limit);
     }
 }
