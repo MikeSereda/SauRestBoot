@@ -1,6 +1,5 @@
 package ru.sereda.saurestboot.rowmappers;
 
-import org.springframework.jdbc.core.RowMapper;
 import ru.sereda.saurestboot.businesslogic.DeviceParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 

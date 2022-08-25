@@ -33,19 +33,4 @@ public class SessionServiceImpl implements SessionService{
             }
         }
     }
-//
-//    @Override
-//    public List<Session> getSessions(String modemId, LocalDateTime startTime) {
-//        return sessionDAO.getSessions(modemId, startTime);
-//    }
-//
-//    @Override
-//    public List<Session> getSessions(LocalDateTime startTime) {
-//        return sessionDAO.getSessions(startTime);
-//    }
-//
-//    @Override
-//    public List<Session> getSessions(LocalDateTime startTime, LocalDateTime endTime) {
-//        return sessionDAO.getSessions(startTime, endTime);
-//    }
 }

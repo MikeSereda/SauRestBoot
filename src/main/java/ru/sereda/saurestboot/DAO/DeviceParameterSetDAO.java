@@ -1,7 +1,5 @@
 package ru.sereda.saurestboot.DAO;
 
-import ru.sereda.saurestboot.businesslogic.DeviceParameterSet;
-import ru.sereda.saurestboot.businesslogic.DeviceReducedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 
 import java.time.LocalDateTime;

@@ -1,26 +1,17 @@
 package ru.sereda.saurestboot.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.sereda.saurestboot.businesslogic.DeviceParameterSet;
-import ru.sereda.saurestboot.businesslogic.DeviceReducedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
-import ru.sereda.saurestboot.rowmappers.DeviceMapperImpl;
 import ru.sereda.saurestboot.rowmappers.DeviceParameterSetMapper;
 import ru.sereda.saurestboot.rowmappers.DeviceReducedParameterSetMapper;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
-
-    @Value("${sql.parameters.session.limit}")
-    int defaultLimit;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
