@@ -30,7 +30,8 @@ public class SessionDAOImpl implements SessionDAO {
                 SELECT "modemId",  "timestampWotz" as "startTime", "timestampWotz" + "lead" as "endTime", "lead" as "duration" FROM (
                 SELECT "modemId", "timestampWotz", lead("timestampWotz")OVER(PARTITION BY "modemId" ORDER BY "timestampWotz") -"timestampWotz"  as "lead"
                 FROM parameters WHERE "ebNo"<'0' ORDER BY "timestampWotz")
-                as T WHERE "lead">? AND "modemId"=? AND "timestampWotz">=? ORDER BY "startTime\"""";
+                as T WHERE "lead">? AND "modemId"=? AND "timestampWotz">=? ORDER BY "startTime"
+                """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql,
                 lag, modemId, startTime);
         List<Session> sessions = new ArrayList<>();
@@ -46,7 +47,8 @@ public class SessionDAOImpl implements SessionDAO {
                 SELECT "modemId",  "timestampWotz" as "startTime", "timestampWotz" + "lead" as "endTime", "lead" as "duration" FROM (
                     SELECT "modemId", "timestampWotz", lead("timestampWotz")OVER(PARTITION BY "modemId" ORDER BY "timestampWotz") -"timestampWotz"  as "lead"
                     FROM parameters WHERE "ebNo"<'0' ORDER BY "timestampWotz")
-                as T WHERE "lead">? AND "modemId"=? AND "timestampWotz">=? AND "timestampWotz"+"lead"<=? ORDER BY "startTime\"""";
+                as T WHERE "lead">? AND "modemId"=? AND "timestampWotz">=? AND "timestampWotz"+"lead"<=? ORDER BY "startTime"
+                """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql,
                 lag, modemId, startTime, endTime);
         List<Session> sessions = new ArrayList<>();
@@ -62,7 +64,8 @@ public class SessionDAOImpl implements SessionDAO {
                 SELECT "modemId",  "timestampWotz" as "startTime", "timestampWotz" + "lead" as "endTime", "lead" as "duration" FROM (
                     SELECT "modemId", "timestampWotz", lead("timestampWotz")OVER(PARTITION BY "modemId" ORDER BY "timestampWotz") -"timestampWotz"  as "lead"
                     FROM parameters WHERE "ebNo"<'0' ORDER BY "timestampWotz")
-                as T WHERE "lead">? AND "timestampWotz">=? ORDER BY "startTime\"""";
+                as T WHERE "lead">? AND "timestampWotz">=? ORDER BY "startTime"
+                """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql,
                 lag, startTime);
         List<Session> sessions = new ArrayList<>();
@@ -78,7 +81,8 @@ public class SessionDAOImpl implements SessionDAO {
                 SELECT "modemId",  "timestampWotz" as "startTime", "timestampWotz" + "lead" as "endTime", "lead" as "duration" FROM (
                     SELECT "modemId", "timestampWotz", lead("timestampWotz")OVER(PARTITION BY "modemId" ORDER BY "timestampWotz") -"timestampWotz"  as "lead"
                     FROM parameters WHERE "ebNo"<'0' ORDER BY "timestampWotz")
-                as T WHERE "lead">? AND "timestampWotz">=? AND "timestampWotz"+"lead"<=? ORDER BY "startTime\"""";
+                as T WHERE "lead">? AND "timestampWotz">=? AND "timestampWotz"+"lead"<=? ORDER BY "startTime"
+                """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql,
                 lag, startTime, endTime);
         List<Session> sessions = new ArrayList<>();

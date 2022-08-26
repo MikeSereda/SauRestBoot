@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.businesslogic.Device;
+import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.Session;
 import ru.sereda.saurestboot.service.DeviceService;
 import ru.sereda.saurestboot.service.DeviceParameterSetService;
@@ -26,43 +27,46 @@ public class DataRestController {
     @Autowired
     DeviceService deviceService;
 
-    @GetMapping("/params-between")
-    public HashMap<String,String> paramsBetween(
+    @GetMapping("/parameters")
+    public List<ParameterSet> getParameters(
             @RequestParam(name = "startTime") String startTime,
-            @RequestParam(name = "endTime") String endTime,
-            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId,
-            @RequestParam(name = "limit", required = false, defaultValue = "${dashboard.limit}") int limit,
-            @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced
-    ){
-        HashMap<String,String> params = new HashMap<>();
-        params.put("startTime",startTime);
-        params.put("endTime",endTime);
-        if (modemId.isEmpty()){
-            params.put("modemId","multiple_modems");
+            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
+            @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
+            @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
+            @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
+        if (deviceId.isEmpty()){
+            if (endTime.isEmpty()){
+                return parameterSetService.getParameters(LocalDateTime.parse(startTime),reduced,limit);
+            }
+            else {
+                return parameterSetService.getParameters(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
+            }
         }
         else {
-            params.put("modemId",modemId);
+            if (endTime.isEmpty()){
+                return parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),reduced,limit);
+            }
+            else {
+                return parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
+            }
         }
-        params.put("limit", String.valueOf(limit));
-        params.put("reduced",String.valueOf(reduced));
-        return params;
     }
 
-    @PostMapping("/refresh-modem-graphs")
-    public HashMap<String, LocalDateTime> refreshModemGraphs(
-            @RequestParam(name = "limit", required = false, defaultValue = "${dashboard.limit}") int limit,
+    @PostMapping("/updates")
+    public List<ParameterSet> updateDeviceGraphs(
+            @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
             @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced,
             @RequestBody HashMap<String, LocalDateTime> lastPairs
     ){
-        return lastPairs;
+        return parameterSetService.getUpdates(lastPairs,reduced,limit);
     }
 
     @GetMapping("/sessions")
     public List<Session> testMethod5(
             @RequestParam(name = "startTime") String startTime,
             @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
-            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId) {
-        return sessionService.getSessions(modemId,startTime,endTime);
+            @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId) {
+        return sessionService.getSessions(deviceId,startTime,endTime);
     }
 
     @GetMapping("/devices/{deviceId}")

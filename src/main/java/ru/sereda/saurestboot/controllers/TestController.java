@@ -1,8 +1,12 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.businesslogic.*;
+import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
 import ru.sereda.saurestboot.service.DeviceService;
 import ru.sereda.saurestboot.service.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.SessionService;
@@ -24,6 +28,15 @@ public class TestController {
 
     @Autowired
     DeviceService deviceService;
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public TestController(AuthenticationManager authenticationManagerBean, JwtTokenProvider jwtTokenProvider){
+        this.authenticationManager = authenticationManagerBean;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @GetMapping("/test")
     public HashMap<String,Object> testMethod(
@@ -62,5 +75,19 @@ public class TestController {
                 return parameterSetService.getParameters(modemId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
             }
         }
+    }
+
+    @GetMapping("/authenticated")
+    public String authenticated(){
+        try {
+            return "Auth";
+        } catch (ArithmeticException e){
+            throw new BadCredentialsException("invalid.");
+        }
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "Admin";
     }
 }

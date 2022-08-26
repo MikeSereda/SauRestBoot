@@ -8,6 +8,7 @@ import ru.sereda.saurestboot.businesslogic.ParameterSet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -62,5 +63,14 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
             limit = sqlParametersetLimit;
         }
         return parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit);
+    }
+
+    @Override
+    public List<ParameterSet> getUpdates(HashMap<String, LocalDateTime> lastPairs, boolean reduced, int limit) {
+        List<ParameterSet> deviceParameterSets = new ArrayList<>();
+        for (String deviceId : lastPairs.keySet()){
+            deviceParameterSets.addAll(getParameters(deviceId,lastPairs.get(deviceId), reduced, limit));
+        }
+        return deviceParameterSets;
     }
 }
