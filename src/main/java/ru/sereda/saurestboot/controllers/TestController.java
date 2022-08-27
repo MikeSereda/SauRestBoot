@@ -29,14 +29,7 @@ public class TestController {
     @Autowired
     DeviceService deviceService;
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    public TestController(AuthenticationManager authenticationManagerBean, JwtTokenProvider jwtTokenProvider){
-        this.authenticationManager = authenticationManagerBean;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @GetMapping("/test")
     public HashMap<String,Object> testMethod(
@@ -47,7 +40,9 @@ public class TestController {
             parameterSet = new DeviceReducedParameterSet("cdm111",6.5f, 6.2f, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         }
         else{
-            parameterSet = new DeviceParameterSet(6.5f, 6.2f, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),68,24,1.3f,1f,"None","None","None","None", "cdm111");
+            parameterSet = new DeviceParameterSet(6.5f, 6.2f, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                    68,24,1.3f,1f,"None","None","None","None",
+                    "cdm111",true,"tested");
         }
         return parameterSet.getParametersMap();
     }

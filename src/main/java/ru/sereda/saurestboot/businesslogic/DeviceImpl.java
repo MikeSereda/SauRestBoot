@@ -7,8 +7,17 @@ public class DeviceImpl implements Device{
     private int port;
     private String description;
     private String location;
+    private boolean active;
 
     public DeviceImpl() {
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getName() {

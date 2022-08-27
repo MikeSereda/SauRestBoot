@@ -18,6 +18,8 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
     private final String txAlarm;
     private final String rxAlarm;
     private final String oduAlarm;
+    private final boolean reachable;
+    private final String askerVersion;
 
     public DeviceParameterSet(float ebNo,
                               float ebNoRemote,
@@ -30,7 +32,9 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
                               String txAlarm,
                               String rxAlarm,
                               String oduAlarm,
-                              String modemId) {
+                              String modemId,
+                              boolean reachable,
+                              String askerVersion) {
         super(modemId, ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
         this.temperature = temperature;
@@ -40,6 +44,8 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
         this.txAlarm = txAlarm;
         this.rxAlarm = rxAlarm;
         this.oduAlarm = oduAlarm;
+        this.reachable = reachable;
+        this.askerVersion = askerVersion;
     }
 
     @Override
@@ -56,6 +62,8 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
         parametersMap.put("txAlarm",txAlarm);
         parametersMap.put("rxAlarm",rxAlarm);
         parametersMap.put("oduAlarm",oduAlarm);
+        parametersMap.put("reachable",reachable);
+        parametersMap.put("askerVersion",askerVersion);
         return parametersMap;
     }
 
@@ -108,6 +116,14 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
         return oduAlarm;
     }
 
+    public boolean isReachable() {
+        return reachable;
+    }
+
+    public String getAskerVersion() {
+        return askerVersion;
+    }
+
     static public List<DeviceParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
         List<DeviceParameterSet> parameterSetList = new ArrayList<>();
         for (Map<String,Object> map : mapList){
@@ -123,7 +139,9 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
                     (String) map.get("txAlarm"),
                     (String) map.get("rxAlarm"),
                     (String) map.get("oduAlarm"),
-                    (String) map.get("modemId")));
+                    (String) map.get("modemId"),
+                    (Boolean) map.get("reachable"),
+                    (String) map.get("askerVersion")));
         }
         return parameterSetList;
     }

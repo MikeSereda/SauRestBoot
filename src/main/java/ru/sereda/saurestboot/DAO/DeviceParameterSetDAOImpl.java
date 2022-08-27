@@ -30,18 +30,18 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT "modemId", "timestampWotz", "ebNo", "ebNoRemote" FROM parameters WHERE "modemId"=?
-                    AND "timestampWotz">? AND "timestampWotz"<? ORDER BY "timestampWotz" DESC LIMIT ?
-                    ) AS T ORDER BY "timestampWotz" ASC
+                    SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
                     """;
         }
         else {
             mapper = new DeviceParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT * FROM parameters WHERE "modemId"=? AND "timestampWotz">? AND "timestampWotz"<?
-                    ORDER BY "timestampWotz" DESC LIMIT ?
-                    ) AS T ORDER BY "timestampWotz" ASC
+                    SELECT * FROM parameters WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<?
+                    ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
                     """;
         }
         return jdbcTemplate.query(sql, mapper, modemId, startTime, endTime, limit);
@@ -60,18 +60,18 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT "modemId", "timestampWotz", "ebNo", "ebNoRemote" FROM parameters WHERE "modemId"=?
-                    AND "timestampWotz">? ORDER BY "timestampWotz" DESC LIMIT ?
-                    ) AS T ORDER BY "timestampWotz" ASC
+                    SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
                     """;
         }
         else {
             mapper = new DeviceParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT * FROM parameters WHERE "modemId"=? AND "timestampWotz">?
-                    ORDER BY "timestampWotz" DESC LIMIT ?
-                    ) AS T ORDER BY "timestampWotz" ASC
+                    SELECT * FROM parameters WHERE modem_id=? AND timestamp_wotz>?
+                    ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
                     """;
         }
         return jdbcTemplate.query(sql, mapper, modemId, startTime, limit);

@@ -2,10 +2,12 @@ package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.businesslogic.Device;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.Session;
+import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
 import ru.sereda.saurestboot.service.DeviceService;
 import ru.sereda.saurestboot.service.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.SessionService;
@@ -27,6 +29,15 @@ public class DataRestController {
     @Autowired
     DeviceService deviceService;
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public DataRestController(AuthenticationManager authenticationManagerBean, JwtTokenProvider jwtTokenProvider){
+        this.authenticationManager = authenticationManagerBean;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
     @GetMapping("/parameters")
     public List<ParameterSet> getParameters(
             @RequestParam(name = "startTime") String startTime,
@@ -34,6 +45,8 @@ public class DataRestController {
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
             @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
             @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
+        startTime=startTime.replace(' ','T');
+        endTime=endTime.replace(' ','T');
         if (deviceId.isEmpty()){
             if (endTime.isEmpty()){
                 return parameterSetService.getParameters(LocalDateTime.parse(startTime),reduced,limit);
@@ -66,6 +79,8 @@ public class DataRestController {
             @RequestParam(name = "startTime") String startTime,
             @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId) {
+        startTime=startTime.replace(' ','T');
+        endTime=endTime.replace(' ','T');
         return sessionService.getSessions(deviceId,startTime,endTime);
     }
 

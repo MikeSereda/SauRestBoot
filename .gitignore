@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+dockerCreator
+dockerCreator/*
 
 ### NetBeans ###
 /nbproject/private/
