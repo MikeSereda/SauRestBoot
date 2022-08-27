@@ -15,6 +15,7 @@ public class DeviceMapperImpl implements DeviceMapper{
         deviceImpl.setPort(rs.getInt("port"));
         deviceImpl.setLocation(rs.getString("location"));
         deviceImpl.setDescription(rs.getString("description"));
+        deviceImpl.setActive(Boolean.parseBoolean(rs.getString("active")));
         return deviceImpl;
     }
 }

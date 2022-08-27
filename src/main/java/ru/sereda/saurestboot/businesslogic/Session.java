@@ -30,9 +30,9 @@ public class Session {
 
     public static Session sessionWrapper(Map<String,Object> map){
         return new Session(
-                (String)map.get("modemId"),
-                ((Timestamp)map.get("startTime")).toLocalDateTime(),
-                ((Timestamp)map.get("endTime")).toLocalDateTime()
+                (String)map.get("modem_id"),
+                ((Timestamp)map.get("start_time")).toLocalDateTime(),
+                ((Timestamp)map.get("end_time")).toLocalDateTime()
         );
     }
 }

@@ -12,10 +12,10 @@ public class DeviceReducedParameterSetMapper implements RowMapper<ParameterSet> 
     @Override
     public ParameterSet mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new DeviceReducedParameterSet(
-                rs.getString("modemId"),
-                rs.getFloat("ebNo"),
-                rs.getFloat("ebNoRemote"),
-                rs.getTimestamp("timestampWotz").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
+                rs.getString("modem_id"),
+                rs.getFloat("eb_no"),
+                rs.getFloat("eb_no_remote"),
+                rs.getTimestamp("timestamp_wotz").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
         );
     }
 }
