@@ -13,6 +13,7 @@ import ru.sereda.saurestboot.service.SessionService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,5 +85,22 @@ public class TestController {
     @GetMapping("/admin")
     public String admin(){
         return "Admin";
+    }
+
+    @GetMapping("/phones")
+    public List<PhoneRegion> getPhones(){
+        List<PhoneRegion> phoneRegions = new ArrayList<>();
+        phoneRegions.add(new PhoneRegion());
+        phoneRegions.get(0).setCity("Красноярск");
+        phoneRegions.get(0).setCityCode("0391");
+        phoneRegions.get(0).addSubscriber("Начальник смены","21213");
+        phoneRegions.get(0).addSubscriber("Серпантин","23219");
+
+        phoneRegions.add(new PhoneRegion());
+        phoneRegions.get(1).setCity("Владивосток");
+        phoneRegions.get(1).setCityCode("0423");
+        phoneRegions.get(1).addSubscriber("Серпантин","2043");
+        phoneRegions.get(1).addSubscriber("Дейкун","2053");
+        return phoneRegions;
     }
 }
