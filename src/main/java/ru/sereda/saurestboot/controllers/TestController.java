@@ -1,19 +1,24 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.DAO.PhoneDAO;
 import ru.sereda.saurestboot.businesslogic.*;
 import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
 import ru.sereda.saurestboot.service.DeviceService;
 import ru.sereda.saurestboot.service.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.PhoneService;
 import ru.sereda.saurestboot.service.SessionService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +34,7 @@ public class TestController {
 
     @Autowired
     DeviceService deviceService;
+
 
 
 
@@ -87,20 +93,4 @@ public class TestController {
         return "Admin";
     }
 
-    @GetMapping("/phones")
-    public List<PhoneRegion> getPhones(){
-        List<PhoneRegion> phoneRegions = new ArrayList<>();
-        phoneRegions.add(new PhoneRegion());
-        phoneRegions.get(0).setCity("Красноярск");
-        phoneRegions.get(0).setCityCode("0391");
-        phoneRegions.get(0).addSubscriber("Начальник смены","21213");
-        phoneRegions.get(0).addSubscriber("Серпантин","23219");
-
-        phoneRegions.add(new PhoneRegion());
-        phoneRegions.get(1).setCity("Владивосток");
-        phoneRegions.get(1).setCityCode("0423");
-        phoneRegions.get(1).addSubscriber("Серпантин","2043");
-        phoneRegions.get(1).addSubscriber("Дейкун","2053");
-        return phoneRegions;
-    }
 }
