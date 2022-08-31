@@ -53,4 +53,13 @@ public class PhoneRegion {
     public String getFullPhone(String subscriber){
         return cityCode+subscribers.get(subscriber);
     }
+
+    @Override
+    public String toString() {
+        return "PhoneRegion{" +
+                "city='" + city + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", subscribers=" + subscribers +
+                '}';
+    }
 }

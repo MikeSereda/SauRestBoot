@@ -79,6 +79,14 @@ public class TestController {
         }
     }
 
+    @PostMapping("/phones")
+    public PhoneRegion addPhoneRegions(
+            @RequestBody List<PhoneRegion> phoneRegions
+    ){
+        System.out.println(phoneRegions.toString());
+        return null;
+    }
+
     @GetMapping("/authenticated")
     public String authenticated(){
         try {
