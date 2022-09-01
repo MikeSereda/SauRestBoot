@@ -93,7 +93,13 @@ public class DataRestController {
 
     @GetMapping("/devices/{deviceId}")
     public ResponseEntity<Device> getDevice(@PathVariable("deviceId") String deviceId){
-        return deviceService.getDevice(deviceId);
+        Device device = deviceService.getDevice(deviceId);
+        if (device!=null){
+            return new ResponseEntity<>(device, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/devices")

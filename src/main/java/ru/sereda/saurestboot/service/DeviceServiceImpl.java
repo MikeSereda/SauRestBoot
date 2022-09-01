@@ -26,14 +26,8 @@ public class DeviceServiceImpl implements DeviceService{
     }
 
     @Override
-    public ResponseEntity<Device> getDevice(String id) {
-        Device device = deviceDAO.getDevice(id);
-        if (device != null){
-            return new ResponseEntity<>(device, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Device getDevice(String id) {
+        return deviceDAO.getDevice(id);
     }
 
     @Override

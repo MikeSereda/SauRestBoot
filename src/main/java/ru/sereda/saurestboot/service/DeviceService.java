@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DeviceService {
     List<Device> getDevices(String deviceType);
-    ResponseEntity<Device> getDevice(String id);
+    Device getDevice(String id);
     List<String> getDeviceTypes();
     List<String> getDeviceIds();
 }
