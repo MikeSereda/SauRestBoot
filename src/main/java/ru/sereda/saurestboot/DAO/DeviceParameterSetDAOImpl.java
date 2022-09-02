@@ -76,4 +76,54 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
         }
         return jdbcTemplate.query(sql, mapper, modemId, startTime, limit);
     }
+
+    @Override
+    public List<ParameterSet> getParametersApproximated(String modemId, LocalDateTime startTime, boolean reduced, int limit, int approximating) {
+        String sql;
+        DeviceReducedParameterSetMapper mapper;
+        if (reduced){
+            mapper = new DeviceReducedParameterSetMapper();
+            sql = """
+                    WITH counted_table AS
+                        (SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        WHERE modem_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
+                    SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
+                    """;
+        }
+        else {
+            mapper = new DeviceParameterSetMapper();
+            sql = """
+                    WITH counted_table AS
+                        (SELECT *, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        WHERE modem_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
+                    SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
+                    """;
+        }
+        return jdbcTemplate.query(sql, mapper, modemId, startTime, limit*approximating, approximating, limit);
+    }
+
+    @Override
+    public List<ParameterSet> getParametersApproximated(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit, int approximating) {
+        String sql;
+        DeviceReducedParameterSetMapper mapper;
+        if (reduced){
+            mapper = new DeviceReducedParameterSetMapper();
+            sql = """
+                    WITH counted_table AS
+                        (SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
+                    SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
+                    """;
+        }
+        else {
+            mapper = new DeviceParameterSetMapper();
+            sql = """
+                    WITH counted_table AS
+                        (SELECT *, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
+                    SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
+                    """;
+        }
+        return jdbcTemplate.query(sql, mapper, modemId, startTime, endTime, limit*approximating, approximating, limit);
+    }
 }
