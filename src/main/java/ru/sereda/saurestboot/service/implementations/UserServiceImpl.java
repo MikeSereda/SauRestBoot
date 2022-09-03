@@ -1,16 +1,17 @@
-package ru.sereda.saurestboot.service;
+package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.sereda.saurestboot.DAO.RoleDAO;
-import ru.sereda.saurestboot.DAO.UserDAO;
+import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
+import ru.sereda.saurestboot.DAO.interfaces.UserDAO;
 import ru.sereda.saurestboot.businesslogic.User;
+import ru.sereda.saurestboot.service.interfaces.UserService;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;

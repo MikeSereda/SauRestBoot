@@ -1,24 +1,15 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.sereda.saurestboot.DAO.PhoneDAO;
 import ru.sereda.saurestboot.businesslogic.*;
-import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
-import ru.sereda.saurestboot.service.DeviceService;
-import ru.sereda.saurestboot.service.DeviceParameterSetService;
-import ru.sereda.saurestboot.service.PhoneService;
-import ru.sereda.saurestboot.service.SessionService;
+import ru.sereda.saurestboot.service.interfaces.DeviceService;
+import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.interfaces.SessionService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 

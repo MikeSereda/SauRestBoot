@@ -1,8 +1,9 @@
-package ru.sereda.saurestboot.DAO;
+package ru.sereda.saurestboot.DAO.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.sereda.saurestboot.DAO.interfaces.DeviceParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.rowmappers.DeviceParameterSetMapper;
 import ru.sereda.saurestboot.rowmappers.DeviceReducedParameterSetMapper;

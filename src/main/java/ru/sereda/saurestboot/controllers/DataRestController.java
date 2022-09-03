@@ -10,10 +10,10 @@ import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.PhoneRegion;
 import ru.sereda.saurestboot.businesslogic.Session;
 import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
-import ru.sereda.saurestboot.service.DeviceService;
-import ru.sereda.saurestboot.service.DeviceParameterSetService;
-import ru.sereda.saurestboot.service.PhoneService;
-import ru.sereda.saurestboot.service.SessionService;
+import ru.sereda.saurestboot.service.interfaces.DeviceService;
+import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.interfaces.PhoneService;
+import ru.sereda.saurestboot.service.interfaces.SessionService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

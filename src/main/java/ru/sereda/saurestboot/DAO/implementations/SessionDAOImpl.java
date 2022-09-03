@@ -1,4 +1,4 @@
-package ru.sereda.saurestboot.DAO;
+package ru.sereda.saurestboot.DAO.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.sereda.saurestboot.DAO.interfaces.SessionDAO;
 import ru.sereda.saurestboot.businesslogic.Session;
 
 import java.time.LocalDateTime;

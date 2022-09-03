@@ -1,4 +1,4 @@
-package ru.sereda.saurestboot.DAO;
+package ru.sereda.saurestboot.DAO.interfaces;
 
 import ru.sereda.saurestboot.businesslogic.Device;
 import java.util.List;

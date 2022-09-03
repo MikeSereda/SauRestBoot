@@ -1,20 +1,20 @@
-package ru.sereda.saurestboot.DAO;
+package ru.sereda.saurestboot.DAO.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.sereda.saurestboot.DAO.interfaces.PhoneDAO;
 import ru.sereda.saurestboot.businesslogic.PhoneRegion;
 import ru.sereda.saurestboot.rowmappers.PhoneMapMapper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 @Transactional
-public class PhoneDAOImpl implements PhoneDAO{
+public class PhoneDAOImpl implements PhoneDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

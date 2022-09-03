@@ -1,16 +1,15 @@
-package ru.sereda.saurestboot.service;
+package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.sereda.saurestboot.DAO.DeviceDAO;
+import ru.sereda.saurestboot.DAO.interfaces.DeviceDAO;
 import ru.sereda.saurestboot.businesslogic.Device;
+import ru.sereda.saurestboot.service.interfaces.DeviceService;
 
 import java.util.List;
 
 @Service
-public class DeviceServiceImpl implements DeviceService{
+public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     DeviceDAO deviceDAO;

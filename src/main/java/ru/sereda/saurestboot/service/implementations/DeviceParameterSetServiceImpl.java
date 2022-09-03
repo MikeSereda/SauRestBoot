@@ -1,10 +1,12 @@
-package ru.sereda.saurestboot.service;
+package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.sereda.saurestboot.DAO.DeviceParameterSetDAO;
+import ru.sereda.saurestboot.DAO.interfaces.DeviceParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
+import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.interfaces.DeviceService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

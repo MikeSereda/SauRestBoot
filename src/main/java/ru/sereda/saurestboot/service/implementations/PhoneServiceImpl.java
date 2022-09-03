@@ -1,9 +1,10 @@
-package ru.sereda.saurestboot.service;
+package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.sereda.saurestboot.DAO.PhoneDAO;
+import ru.sereda.saurestboot.DAO.interfaces.PhoneDAO;
 import ru.sereda.saurestboot.businesslogic.PhoneRegion;
+import ru.sereda.saurestboot.service.interfaces.PhoneService;
 
 import java.util.ArrayList;
 import java.util.List;

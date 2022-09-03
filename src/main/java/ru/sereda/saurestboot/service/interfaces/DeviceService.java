@@ -1,4 +1,4 @@
-package ru.sereda.saurestboot.service;
+package ru.sereda.saurestboot.service.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import ru.sereda.saurestboot.businesslogic.Device;
