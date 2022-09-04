@@ -45,31 +45,6 @@ public class TestController {
         return parameterSet.getParametersMap();
     }
 
-    @GetMapping("/test-parameter-set")
-    public List<ParameterSet> testMethod1(
-            @RequestParam(name = "startTime") String startTime,
-            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
-            @RequestParam(name = "modemId", required = false, defaultValue = "") String modemId,
-            @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
-            @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
-        if (modemId.isEmpty()){
-            if (endTime.isEmpty()){
-                return parameterSetService.getParameters(LocalDateTime.parse(startTime),reduced,limit);
-            }
-            else {
-                return parameterSetService.getParameters(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
-            }
-        }
-        else {
-            if (endTime.isEmpty()){
-                return parameterSetService.getParameters(modemId, LocalDateTime.parse(startTime),reduced,limit);
-            }
-            else {
-                return parameterSetService.getParameters(modemId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
-            }
-        }
-    }
-
     @PostMapping("/phones")
     public PhoneRegion addPhoneRegions(
             @RequestBody List<PhoneRegion> phoneRegions
