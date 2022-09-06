@@ -36,15 +36,6 @@ public class DataRestController {
     @Autowired
     PhoneService phoneService;
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public DataRestController(AuthenticationManager authenticationManagerBean, JwtTokenProvider jwtTokenProvider){
-        this.authenticationManager = authenticationManagerBean;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
     @GetMapping("/parameters")
     public List<ParameterSet> getParameters(
             @RequestParam(name = "startTime") String startTime,
