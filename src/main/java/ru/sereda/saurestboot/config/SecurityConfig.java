@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import ru.sereda.saurestboot.security.entrypoints.Http401UnauthorizedEntryPoint;
 import ru.sereda.saurestboot.security.jwt.JwtConfigurer;
 import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
 
@@ -30,19 +32,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Autowired
+    private Http401UnauthorizedEntryPoint authEntrypoint;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .exceptionHandling().authenticationEntryPoint(authEntrypoint)
+                .and()
                 .httpBasic().disable()
+                .cors().and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api").permitAll()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
-//                .anyRequest().authenticated()
                 .antMatchers("/api/authenticated/**").authenticated()
+//                .antMatchers("/api/devices/**").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/api/**").permitAll()
                 .and()
+
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }

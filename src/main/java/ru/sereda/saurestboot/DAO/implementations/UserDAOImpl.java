@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
         User user = new User();
         user.setUsername(username);
         Role role = new Role();
-        role.setName("ADMIN");
+        role.setName("USER");
         List<Role> roles = new ArrayList<>();
         roles.add(role);
         user.setRoles(roles);
