@@ -35,6 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Http401UnauthorizedEntryPoint authEntrypoint;
 
+    String[] roles = new String[]{
+            "ADMIN_SAT",
+            "ADMIN_ALL"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,8 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/api/admin/**").hasAnyAuthority(roles)
                 .antMatchers("/api/authenticated/**").authenticated()
+                .antMatchers("/api/phones/**").authenticated()
+//                .antMatchers("/api/phones/**").hasAuthority("ADMIN")
 //                .antMatchers("/api/devices/**").hasAnyAuthority("ADMIN","USER")
                 .antMatchers("/api/**").permitAll()
                 .and()

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.DTO.AuthRequestDTO;
+import ru.sereda.saurestboot.businesslogic.Role;
 import ru.sereda.saurestboot.businesslogic.User;
 import ru.sereda.saurestboot.security.jwt.JwtAuthException;
 import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
@@ -45,6 +46,10 @@ public class AuthRestController {
             Map<String,String> response = new HashMap<>();
             response.put("username",username);
             response.put("token",token);
+            response.put("roles","");
+            for (Role role: user.getRoles()){
+                response.replace("roles",response.get("roles")+role.getName()+":");
+            }
             return ResponseEntity.ok(response);
         }
         catch (JwtAuthException e){

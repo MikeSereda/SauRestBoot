@@ -24,10 +24,13 @@ public class UserDAOImpl implements UserDAO {
     public User getUserByUsername(String username) {
         User user = new User();
         user.setUsername(username);
-        Role role = new Role();
-        role.setName("USER");
         List<Role> roles = new ArrayList<>();
+        Role role = new Role();
+        role.setName("OPERATOR_SAT");
         roles.add(role);
+        Role role2 = new Role();
+        role2.setName("ADMIN_SAT");
+        roles.add(role2);
         user.setRoles(roles);
         user.setPassword("$2a$09$JnA374DlP5IqX/fi9Ho4j.12B3khyKtv3srZSmNodTIJRKoC9GvAC");
         return user;
