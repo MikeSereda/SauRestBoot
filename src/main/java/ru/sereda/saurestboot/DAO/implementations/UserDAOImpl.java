@@ -1,15 +1,27 @@
 package ru.sereda.saurestboot.DAO.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
 import ru.sereda.saurestboot.DAO.interfaces.UserDAO;
+import ru.sereda.saurestboot.businesslogic.Device;
 import ru.sereda.saurestboot.businesslogic.Role;
 import ru.sereda.saurestboot.businesslogic.User;
+import ru.sereda.saurestboot.rowmappers.DeviceMapperImpl;
+import ru.sereda.saurestboot.rowmappers.UserMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+    @Autowired
+    protected JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private RoleDAO roleDAO;
+
     @Override
     public User save(User user) {
         return user;
@@ -17,27 +29,37 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAll() {
-        return null;
+        String sql = "SELECT * FROM users";
+        List<User> users = jdbcTemplate.query(sql, new UserMapper());
+        for (User user : users){
+            user.setRoles(roleDAO.getRoles(user.getId()));
+        }
+        return users;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        User user = new User();
-        user.setUsername(username);
-        List<Role> roles = new ArrayList<>();
-        Role role = new Role();
-        role.setName("OPERATOR_SAT");
-        roles.add(role);
-        Role role2 = new Role();
-        role2.setName("ADMIN_SAT");
-        roles.add(role2);
-        user.setRoles(roles);
-        user.setPassword("$2a$09$JnA374DlP5IqX/fi9Ho4j.12B3khyKtv3srZSmNodTIJRKoC9GvAC");
-        return user;
+        String sql = "SELECT * FROM users WHERE name=?";
+        List<User> users = jdbcTemplate.query(sql, new UserMapper(),username);
+        users.get(0).setRoles(roleDAO.getRoles(users.get(0).getId()));
+        return users.get(0);
     }
 
     @Override
     public User getUserById(Long userId) {
-        return null;
+        String sql = "SELECT * FROM users WHERE id=?";
+        List<User> users = jdbcTemplate.query(sql, new UserMapper(),userId);
+        users.get(0).setRoles(roleDAO.getRoles(users.get(0).getId()));
+        return users.get(0);
+    }
+
+    @Override
+    public void setUserRoles(User user, List<Role> roles) {
+        roleDAO.changeRoles(user,roles);
+    }
+
+    @Override
+    public void setUserRoles(Long userId, List<Role> roles) {
+        roleDAO.changeRoles(getUserById(userId),roles);
     }
 }
