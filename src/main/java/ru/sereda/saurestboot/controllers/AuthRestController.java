@@ -56,9 +56,4 @@ public class AuthRestController {
             throw new BadCredentialsException("invalid username or password");
         }
     }
-    @PostMapping("/new-user")
-    public ResponseEntity register(/*@RequestBody User user*/){
-        //создать пользователя
-        return null;
-    }
 }

@@ -1,16 +1,15 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.businesslogic.*;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.SessionService;
+import ru.sereda.saurestboot.service.interfaces.UserService;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin
@@ -26,6 +25,9 @@ public class TestController {
 
     @Autowired
     DeviceService deviceService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/phones")
     public PhoneRegion addPhoneRegions(
@@ -47,6 +49,28 @@ public class TestController {
     @GetMapping("/admin")
     public String admin(){
         return "Admin";
+    }
+
+    @GetMapping("/admin/users")
+    public List<User> getUsers(){
+        return userService.getUsers();
+    }
+
+    @GetMapping("/admin/users/{id}")
+    public User getUsers(@PathVariable("id") Long userId){
+        return userService.getUser(userId);
+    }
+
+    @PostMapping("/admin/users/{id}")
+    public User editUser(@PathVariable("id") Long userId, @RequestBody User user){ //DTO для апдейта описания и ролей
+        //изменить пользоателя (по сути - только роли и описание)
+        return null;
+    }
+
+    @PostMapping("/admin/user-add")
+    public User register(@RequestBody User user){ //DTO для создания юзера с Base64 пароля
+        //создать пользователя
+        return null;
     }
 
 }

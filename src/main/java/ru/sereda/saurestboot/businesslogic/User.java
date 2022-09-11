@@ -1,5 +1,7 @@
 package ru.sereda.saurestboot.businesslogic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class User{
@@ -25,6 +27,7 @@ public class User{
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

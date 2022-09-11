@@ -10,6 +10,4 @@ public interface UserDAO {
     List<User> getAll();
     User getUserByUsername(String username);
     User getUserById(Long userId);
-    void setUserRoles(User user, List<Role> roles);
-    void setUserRoles(Long userId, List<Role> roles);
 }

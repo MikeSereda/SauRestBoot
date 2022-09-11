@@ -1,7 +1,6 @@
 package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
@@ -32,6 +31,9 @@ public class UserServiceImpl implements UserService {
         if (user==null){
             System.out.println("IN getUser - user not found by username="+username);
         }
+        else{
+            user.setRoles(roleDAO.getRoles(user.getId()));
+        }
         return user;
     }
 
@@ -41,12 +43,15 @@ public class UserServiceImpl implements UserService {
         if (user==null){
             System.out.println("IN getUser - user not found by id="+id);
         }
+        else {
+            user.setRoles(roleDAO.getRoles(user.getId()));
+        }
         return user;
     }
 
     @Override
     public User register(User user) {
-        Role roleUser = roleDAO.getRole("ROLE_USER");
+        Role roleUser = roleDAO.getRole("ROLE_USER"); // ????????????
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,8 +63,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-//        List<User> users = userDAO.getAll();
-//        return users;
-        return userDAO.getAll();
+        List<User> users = userDAO.getAll();
+        for (User user : users){
+            user.setRoles(roleDAO.getRoles(user.getId()));
+        }
+        return users;
+    }
+
+    @Override
+    public void setUserRoles(String username, List<Role> roles) {
+        roleDAO.changeRoles(getUser(username),roles);
+    }
+
+    @Override
+    public void setUserRoles(User user, List<Role> roles) {
+        roleDAO.changeRoles(user,roles);
     }
 }
