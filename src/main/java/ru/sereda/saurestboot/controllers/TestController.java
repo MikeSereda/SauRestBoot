@@ -1,6 +1,7 @@
 package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +58,12 @@ public class TestController {
     }
 
     @GetMapping("/admin/users/{id}")
-    public User getUsers(@PathVariable("id") Long userId){
-        return userService.getUser(userId);
+    public ResponseEntity<User> getUsers(@PathVariable("id") Long userId){
+        User user = userService.getUser(userId);
+        if (user!=null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/admin/users/{id}")

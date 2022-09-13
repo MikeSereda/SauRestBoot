@@ -15,9 +15,6 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private RoleDAO roleDAO;
-
     @Override
     public User save(User user) {
         return user;
