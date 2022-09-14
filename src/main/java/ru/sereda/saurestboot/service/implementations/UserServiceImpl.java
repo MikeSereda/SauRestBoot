@@ -51,11 +51,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user) {
-        Role roleUser = roleDAO.getRole("ROLE_USER"); // ????????????
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
         User registeredUser = userDAO.save(user);
         System.out.println("IN register - user successfully registered :"+ registeredUser.toString());
         return registeredUser;
