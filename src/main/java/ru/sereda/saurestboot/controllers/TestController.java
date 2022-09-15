@@ -5,12 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.DTO.UserDTO;
 import ru.sereda.saurestboot.businesslogic.*;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.SessionService;
 import ru.sereda.saurestboot.service.interfaces.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -53,8 +55,12 @@ public class TestController {
     }
 
     @GetMapping("/admin/users")
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public List<UserDTO> getUsers(){
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : userService.getUsers()){
+            userDTOs.add(new UserDTO(user));
+        }
+        return userDTOs;
     }
 
     @GetMapping("/admin/users/{id}")
@@ -67,7 +73,8 @@ public class TestController {
     }
 
     @PostMapping("/admin/users/{id}")
-    public User editUser(@PathVariable("id") Long userId, @RequestBody User user){ //DTO для апдейта описания и ролей
+    public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody User user){
+        //DTO для апдейта описания и ролей
         //изменить пользоателя (по сути - только роли и описание)
         return null;
     }
