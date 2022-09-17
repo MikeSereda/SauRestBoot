@@ -9,21 +9,21 @@ import ru.sereda.saurestboot.businesslogic.Role;
 import ru.sereda.saurestboot.businesslogic.User;
 import ru.sereda.saurestboot.service.interfaces.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
-    private final BCryptPasswordEncoder passwordEncoder;
+//    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleDAO roleDAO, BCryptPasswordEncoder passwordEncoder, UserDAO userDAO) {
+    public UserServiceImpl(RoleDAO roleDAO, /*BCryptPasswordEncoder passwordEncoder,*/ UserDAO userDAO) {
         this.roleDAO = roleDAO;
-        this.passwordEncoder = passwordEncoder;
+//        this.passwordEncoder = passwordEncoder;
         this.userDAO = userDAO;
     }
+
 
     @Override
     public User getUser(String username) {
@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
         User registeredUser = userDAO.save(user);
+        roleDAO.changeRoles(user);
         System.out.println("IN register - user successfully registered :"+ registeredUser.toString());
         return registeredUser;
     }
@@ -67,11 +68,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setUserRoles(String username, List<Role> roles) {
-        roleDAO.changeRoles(getUser(username),roles);
+        User user = userDAO.getUserByUsername(username);
+        user.setRoles(roles);
+        roleDAO.changeRoles(user);
     }
 
     @Override
     public void setUserRoles(User user, List<Role> roles) {
-        roleDAO.changeRoles(user,roles);
+        user.setRoles(roles);
+        roleDAO.changeRoles(user);
     }
 }

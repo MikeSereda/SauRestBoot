@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
 import ru.sereda.saurestboot.businesslogic.Role;
 import ru.sereda.saurestboot.businesslogic.User;
-import ru.sereda.saurestboot.rowmappers.DeviceMapperImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,18 @@ public class RoleDAOImpl implements RoleDAO {
                 "(user_id, role_id) VALUES " +
                 "(?,(SELECT id FROM roles WHERE name=?));";
         for (Role role : roles){
+            jdbcTemplate.update(sqlInsert,user.getId(),role.getName());
+        }
+    }
+
+    @Override
+    public void changeRoles(User user) {
+        String sqlDelete = "DELETE FROM role_users WHERE user_id=?";
+        jdbcTemplate.update(sqlDelete,user.getId());
+        String sqlInsert = "INSERT INTO public.role_users" +
+                "(user_id, role_id) VALUES " +
+                "(?,(SELECT id FROM roles WHERE name=?));";
+        for (Role role : user.getRoles()){
             jdbcTemplate.update(sqlInsert,user.getId(),role.getName());
         }
     }

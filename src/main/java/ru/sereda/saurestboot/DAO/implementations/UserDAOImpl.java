@@ -3,7 +3,6 @@ package ru.sereda.saurestboot.DAO.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
 import ru.sereda.saurestboot.DAO.interfaces.UserDAO;
 import ru.sereda.saurestboot.businesslogic.User;
 import ru.sereda.saurestboot.rowmappers.UserMapper;
@@ -17,6 +16,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User save(User user) {
+        String sqlDelete = "DELETE FROM role_users WHERE user_id=?";
         return user;
     }
 
