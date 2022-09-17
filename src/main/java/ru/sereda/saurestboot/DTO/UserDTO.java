@@ -13,6 +13,13 @@ public class UserDTO {
     private final Long id;
     private final String description;
 
+    public UserDTO(String username, List<Role> roles, Long id, String description) {
+        this.username = username;
+        this.roles = roles;
+        this.id = id;
+        this.description = description;
+    }
+
     public UserDTO(User user) {
         this.username = user.getUsername();
         this.roles = user.getRoles();
@@ -34,5 +41,14 @@ public class UserDTO {
 
     public List<Role> getRoles() {
         return roles;
+    }
+
+    public static User getUserFromDTO (UserDTO userDTO){
+        User user = new User();
+        user.setRoles(userDTO.getRoles());
+        user.setUsername(userDTO.getUsername());
+        user.setId(userDTO.getId());
+        user.setDescription(userDTO.getDescription());
+        return user;
     }
 }

@@ -12,4 +12,5 @@ public interface UserService {
     List<User> getUsers();
     void setUserRoles(String username, List<Role> roles);
     void setUserRoles(User user, List<Role> roles);
+    User editUser (User user);
 }

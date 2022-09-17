@@ -73,10 +73,14 @@ public class TestController {
     }
 
     @PostMapping("/admin/users/{id}")
-    public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody User user){
-        //DTO для апдейта описания и ролей
-        //изменить пользоателя (по сути - только роли и описание)
-        return null;
+    public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody UserDTO user){
+//        userService.editUser(UserDTO.getUserFromDTO(user));
+        User userCheck = userService.getUser(user.getId());
+        userService.setUserRoles(user.getUsername(),user.getRoles());
+        if (userCheck!=null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/admin/user-add")

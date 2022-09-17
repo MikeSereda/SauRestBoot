@@ -78,4 +78,9 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         roleDAO.changeRoles(user);
     }
+
+    @Override
+    public User editUser(User user) {
+        return null;
+    }
 }
