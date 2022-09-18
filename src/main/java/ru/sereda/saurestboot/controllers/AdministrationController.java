@@ -40,8 +40,8 @@ public class AdministrationController {
     public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody UserDTO user){
 //        userService.editUser(UserDTO.getUserFromDTO(user));
         User userCheck = userService.getUser(user.getId());
-        userService.setUserRoles(user.getUsername(),user.getRoles());
         if (userCheck!=null){
+            userService.setUserRoles(user.getUsername(),user.getRoles());
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
