@@ -49,44 +49,4 @@ public class TestController {
         }
     }
 
-    @GetMapping("/admin")
-    public String admin(){
-        return "Admin";
-    }
-
-    @GetMapping("/admin/users")
-    public List<UserDTO> getUsers(){
-        List<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : userService.getUsers()){
-            userDTOs.add(new UserDTO(user));
-        }
-        return userDTOs;
-    }
-
-    @GetMapping("/admin/users/{id}")
-    public ResponseEntity<User> getUsers(@PathVariable("id") Long userId){
-        User user = userService.getUser(userId);
-        if (user!=null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/admin/users/{id}")
-    public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody UserDTO user){
-//        userService.editUser(UserDTO.getUserFromDTO(user));
-        User userCheck = userService.getUser(user.getId());
-        userService.setUserRoles(user.getUsername(),user.getRoles());
-        if (userCheck!=null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @PostMapping("/admin/user-add")
-    public User register(@RequestBody User user){ //DTO для создания юзера с Base64 пароля
-        //создать пользователя
-        return null;
-    }
-
 }

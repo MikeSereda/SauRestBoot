@@ -1,21 +1,55 @@
 package ru.sereda.saurestboot.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.DTO.UserDTO;
+import ru.sereda.saurestboot.businesslogic.User;
+import ru.sereda.saurestboot.service.interfaces.UserService;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class AdministrationController {
-    @GetMapping("/baseLoad2")
-    public HashMap<String,String> testMethod(
-            @RequestParam(required = false,name = "device_type",defaultValue = "cdm 570l") String deviceType)
-    {
-        HashMap<String,String> testHashMap = new HashMap<>();
-        testHashMap.put("Test key1", deviceType);
-        return testHashMap;
+
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/admin/users")
+    public List<UserDTO> getUsers(){
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : userService.getUsers()){
+            userDTOs.add(new UserDTO(user));
+        }
+        return userDTOs;
+    }
+
+    @GetMapping("/admin/users/{id}")
+    public ResponseEntity<User> getUsers(@PathVariable("id") Long userId){
+        User user = userService.getUser(userId);
+        if (user!=null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/admin/users/{id}")
+    public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody UserDTO user){
+//        userService.editUser(UserDTO.getUserFromDTO(user));
+        User userCheck = userService.getUser(user.getId());
+        userService.setUserRoles(user.getUsername(),user.getRoles());
+        if (userCheck!=null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/admin/user-add")
+    public User register(@RequestBody User user){ //DTO для создания юзера с Base64 пароля
+        //создать пользователя
+        return null;
     }
 }

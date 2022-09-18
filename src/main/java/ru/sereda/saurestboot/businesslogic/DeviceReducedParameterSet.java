@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DeviceReducedParameterSet implements ParameterSet {
     public DeviceReducedParameterSet(String modemId, float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
         this.ebNo = ebNo;
         this.ebNoRemote = ebNoRemote;
-        this.timestampWotz = timestampWotz;
+        this.timestampWotz = timestampWotz.truncatedTo(ChronoUnit.SECONDS);
         this.modemId = modemId;
     }
 

@@ -4,13 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import ru.sereda.saurestboot.security.entrypoints.Http401UnauthorizedEntryPoint;
 import ru.sereda.saurestboot.security.jwt.JwtConfigurer;
 import ru.sereda.saurestboot.security.jwt.JwtTokenProvider;
@@ -35,8 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Http401UnauthorizedEntryPoint authEntrypoint;
 
-    String[] roles = new String[]{
+    private final String[] administratingRoles = new String[]{
             "ADMIN_SAT",
+            "ADMIN_ALL"
+    };
+
+    private final String[] configRoles = new String[]{
+            "ADMIN_SAT",
+            "OPERATOR_SAT",
             "ADMIN_ALL"
     };
 
@@ -51,12 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasAnyAuthority(roles)
-                .antMatchers("/api/auth/new-user").hasAnyAuthority(roles)
+                .antMatchers("/api/admin/**").hasAnyAuthority(administratingRoles)
+                .antMatchers("/api/auth/new-user").hasAnyAuthority(administratingRoles)
                 .antMatchers("/api/authenticated/**").authenticated()
-                .antMatchers("/api/phones/**").authenticated()
-//                .antMatchers("/api/phones/**").hasAuthority("ADMIN")
-//                .antMatchers("/api/devices/**").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/api/phones/**").permitAll()
+//                .antMatchers("/api/phones/**").hasAnyAuthority(configRoles)
+//                .antMatchers("/api/devices/**").hasAnyAuthority(configRoles)
                 .antMatchers("/api/**").permitAll()
                 .and()
 
