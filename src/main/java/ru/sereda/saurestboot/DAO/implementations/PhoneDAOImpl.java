@@ -35,6 +35,11 @@ public class PhoneDAOImpl implements PhoneDAO {
         }
     }
 
+    @Override
+    public void savePhoneRegion(PhoneRegion phoneRegion) {
+
+    }
+
 
     public List<PhoneRegion> getPhoneRegions() {
         List<PhoneRegion> phoneRegions = new ArrayList<>();
