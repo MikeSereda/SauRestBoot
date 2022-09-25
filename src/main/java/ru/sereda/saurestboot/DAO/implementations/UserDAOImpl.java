@@ -16,6 +16,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User save(User user) {
+//        String sql2 = "SELECT count(*) FROM users WHERE id = ?";
+//        int count = jdbcTemplate.queryForObject(sql2,Integer.class,user.getId());
+//        if (count>0){
         String sql = "SELECT * FROM users WHERE id=?";
         List<User> users = jdbcTemplate.query(sql, new UserMapper(),user.getId());
         if (users.size()>0){
