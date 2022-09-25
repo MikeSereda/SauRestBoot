@@ -16,7 +16,16 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User save(User user) {
-        String sqlDelete = "DELETE FROM role_users WHERE user_id=?";
+        String sql = "SELECT * FROM users WHERE id=?";
+        List<User> users = jdbcTemplate.query(sql, new UserMapper(),user.getId());
+        if (users.size()>0){
+            String sqlUpdate = "UPDATE public.users SET name=?, password=?, description=? WHERE id=?;";
+            jdbcTemplate.update(sqlUpdate,user.getUsername(),user.getPassword(),user.getDescription(),user.getId());
+        }
+        else {
+            String sqlInsert = "INSERT INTO public.users (id, name, password, description) VALUES (?, ?, ?, ?);";
+            jdbcTemplate.update(sqlInsert, user.getId(),user.getUsername(),user.getPassword(),user.getDescription());
+        }
         return user;
     }
 

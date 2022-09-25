@@ -81,6 +81,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User editUser(User user) {
-        return null;
+        User updatedUser = userDAO.save(user);
+        roleDAO.changeRoles(user);
+        System.out.println("IN register - user successfully updated :"+ updatedUser.toString());
+        return updatedUser;
     }
 }
