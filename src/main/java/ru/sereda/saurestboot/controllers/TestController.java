@@ -40,13 +40,6 @@ public class TestController {
         return null;
     }
 
-    @GetMapping("/authenticated")
-    public String authenticated(){
-        try {
-            return "Auth";
-        } catch (ArithmeticException e){
-            throw new BadCredentialsException("invalid.");
-        }
-    }
+
 
 }

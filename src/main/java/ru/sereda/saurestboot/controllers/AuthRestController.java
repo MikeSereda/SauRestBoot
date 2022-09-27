@@ -56,4 +56,13 @@ public class AuthRestController {
             throw new BadCredentialsException("invalid username or password");
         }
     }
+
+    @GetMapping("/authenticated")
+    public String authenticated(){
+        try {
+            return "Auth";
+        } catch (ArithmeticException e){
+            throw new BadCredentialsException("invalid.");
+        }
+    }
 }
