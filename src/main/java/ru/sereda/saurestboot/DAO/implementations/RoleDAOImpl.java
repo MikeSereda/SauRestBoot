@@ -48,6 +48,11 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
+    public List<Role> getRoles(User user) {
+        return getRoles(user.getId());
+    }
+
+    @Override
     public void changeRoles(User user, List<Role> roles) {
         String sqlDelete = "DELETE FROM role_users WHERE user_id=?";
         jdbcTemplate.update(sqlDelete,user.getId());
