@@ -21,18 +21,6 @@ public class RoleDAOImpl implements RoleDAO {
         return null;
     }
 
-    @Override
-    public List<Role> getRoles(String username) {
-        String sql = "SELECT name FROM roles WHERE id IN " +
-                "(SELECT role_id FROM users RIGHT JOIN role_users " +
-                "ON users.id = role_users.user_id WHERE users.name=?);";
-        List<String> roleNames = jdbcTemplate.queryForList(sql,String.class,username);
-        List<Role> roles = new ArrayList<>();
-        for (String roleName : roleNames){
-            roles.add(new Role(roleName));
-        }
-        return roles;
-    }
 
     @Override
     public List<Role> getRoles(Long id) {

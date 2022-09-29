@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface RoleDAO {
     Role getRole(String name);
-    List<Role> getRoles (String username);
     List<Role> getRoles (Long id);
     List<Role> getRoles (User user);
     void changeRoles(User user, List<Role> roles);
