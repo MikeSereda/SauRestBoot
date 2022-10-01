@@ -16,14 +16,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User save(User user) {
-        String sql2 = "SELECT count(*) FROM users WHERE id = ?";
-        int count = jdbcTemplate.queryForObject(sql2,Integer.class,user.getId());
-        if (count==1){
+        String sql2 = "SELECT EXISTS(SELECT id FROM users WHERE id = ?)";
+        if (jdbcTemplate.queryForObject(sql2,Boolean.class,user.getId())){
 //        String sql = "SELECT * FROM users WHERE id=?";
 //        List<User> users = jdbcTemplate.query(sql, new UserMapper(),user.getId());
 //        if (users.size()>0){
-            String sqlUpdate = "UPDATE public.users SET name=?, password=?, description=? WHERE id=?;";
-            jdbcTemplate.update(sqlUpdate,user.getUsername(),user.getPassword(),user.getDescription(),user.getId());
+            String sqlUpdate = "UPDATE public.users SET name=?, description=? WHERE id=?;";
+            jdbcTemplate.update(sqlUpdate,user.getUsername(),user.getDescription(),user.getId());
         }
         else {
             String sqlInsert = "INSERT INTO public.users (id, name, password, description) VALUES (?, ?, ?, ?);";

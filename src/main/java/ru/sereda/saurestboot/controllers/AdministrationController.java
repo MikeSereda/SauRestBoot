@@ -38,9 +38,8 @@ public class AdministrationController {
 
     @PostMapping("/admin/users/{id}")
     public ResponseEntity<UserDTO> editUser(@PathVariable("id") Long userId, @RequestBody UserDTO user){
-//        userService.editUser(UserDTO.getUserFromDTO(user));
-        User userCheck = userService.getUser(user.getId());
-        if (userCheck!=null){
+        if (userService.getUser(userId)!=null){
+            userService.editUser(UserDTO.getUserFromDTO(user));
             userService.setUserRoles(user.getUsername(),user.getRoles());
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
