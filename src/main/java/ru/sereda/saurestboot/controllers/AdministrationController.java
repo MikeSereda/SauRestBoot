@@ -45,10 +45,10 @@ public class AdministrationController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    @PostMapping("/admin/user-add")
-    public User register(@RequestBody User user){ //DTO для создания юзера с Base64 пароля
-        //создать пользователя
-        return null;
-    }
+//
+//    @PostMapping("/admin/user-add")
+//    public User register(@RequestBody User user){ //DTO для создания юзера с Base64 пароля
+//        //создать пользователя
+//        return null;
+//    }
 }
