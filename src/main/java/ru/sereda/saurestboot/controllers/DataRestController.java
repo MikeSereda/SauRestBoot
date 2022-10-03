@@ -103,7 +103,6 @@ public class DataRestController {
         return deviceService.getDeviceTypes();
     }
 
-
     @GetMapping("/phones")
     public List<PhoneRegion> getPhones(){
         return phoneService.getPhones();

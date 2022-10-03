@@ -71,7 +71,14 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
     public List<ParameterSet> getUpdates(HashMap<String, LocalDateTime> lastPairs, boolean reduced, int limit) {
         List<ParameterSet> deviceParameterSets = new ArrayList<>();
         for (String deviceId : lastPairs.keySet()){
-            deviceParameterSets.addAll(getParameters(deviceId,lastPairs.get(deviceId), reduced, limit));
+            List<ParameterSet> currentParameterSet = new ArrayList<>();
+            currentParameterSet.addAll(getParameters(deviceId,lastPairs.get(deviceId), reduced, limit));
+            if (currentParameterSet.size()>0){
+                if (lastPairs.get(deviceId)==currentParameterSet.get(0).getParametersMap().get("timestampWotz")){
+                    currentParameterSet.remove(0);
+                }
+            }
+            deviceParameterSets.addAll(currentParameterSet);
         }
         return deviceParameterSets;
     }
