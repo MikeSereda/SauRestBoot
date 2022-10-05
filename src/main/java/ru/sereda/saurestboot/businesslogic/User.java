@@ -11,6 +11,9 @@ public class User{
     private List<Role> roles;
     private Long id;
 
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }
