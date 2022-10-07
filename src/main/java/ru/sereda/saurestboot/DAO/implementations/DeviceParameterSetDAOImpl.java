@@ -9,6 +9,7 @@ import ru.sereda.saurestboot.rowmappers.DeviceParameterSetMapper;
 import ru.sereda.saurestboot.rowmappers.DeviceReducedParameterSetMapper;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
@@ -126,5 +127,19 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
                     """;
         }
         return jdbcTemplate.query(sql, mapper, modemId, startTime, endTime, limit*approximating, approximating, limit);
+    }
+
+    @Override
+    public LocalDateTime getLastUpdateTime() {
+        String sql = "SELECT timestamp_wotz FROM parameters ORDER BY timestamp_wotz DESC LIMIT 1;";
+        LocalDateTime lastUpTime = jdbcTemplate.queryForObject(sql,LocalDateTime.class);
+        return lastUpTime;
+    }
+
+    @Override
+    public LocalDateTime getLastUpdateTime(String modemId) {
+        String sql = "SELECT timestamp_wotz FROM parameters WHERE modem_id=? ORDER BY timestamp_wotz DESC LIMIT 1;";
+        LocalDateTime lastUpTime = jdbcTemplate.queryForObject(sql,LocalDateTime.class,modemId);
+        return lastUpTime;
     }
 }

@@ -9,9 +9,11 @@ import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DeviceParameterSetServiceImpl implements DeviceParameterSetService {
@@ -81,5 +83,31 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
             deviceParameterSets.addAll(currentParameterSet);
         }
         return deviceParameterSets;
+    }
+
+
+    @Override
+    public Map<String, List<ParameterSet>> getLastUpdates(boolean relativeTime) {
+        Map<String, List<ParameterSet>> parameters = new HashMap<>();
+        List<String> deviceIds = deviceService.getDeviceIds();
+        for (String id : deviceIds){
+            parameters.putAll(getLastUpdates(id,relativeTime));
+        }
+        return parameters;
+    }
+
+    @Override
+    public Map<String, List<ParameterSet>> getLastUpdates(String modemId,boolean relativeTime) {
+        LocalDateTime upFrom;
+        if (relativeTime){
+            upFrom = parameterSetDAO.getLastUpdateTime(modemId).truncatedTo(ChronoUnit.SECONDS).minusHours(2);
+        }
+        else {
+            upFrom = LocalDateTime.now().minusHours(2);
+        }
+        Map<String, List<ParameterSet>> parameters = new HashMap<>();
+        List<ParameterSet> parameterSetList = parameterSetDAO.getParameters(modemId,upFrom,true,2500);
+        parameters.put(modemId,parameterSetList);
+        return parameters;
     }
 }
