@@ -18,6 +18,7 @@ import ru.sereda.saurestboot.service.interfaces.SessionService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -70,6 +71,21 @@ public class DataRestController {
             @RequestBody HashMap<String, LocalDateTime> lastPairs
     ){
         return parameterSetService.getUpdates(lastPairs,reduced,limit);
+    }
+
+    @GetMapping("/updates")
+    public Map<String, List<ParameterSet>> getLastUpdates(
+            @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
+            @RequestParam(name = "relative",required = false, defaultValue = "true") boolean reduced)
+    {
+        Map<String, List<ParameterSet>> parameterSetList;
+        if (deviceId.isEmpty()){
+            parameterSetList = parameterSetService.getLastUpdates(reduced);
+        }
+        else{
+            parameterSetList = parameterSetService.getLastUpdates(deviceId,reduced);
+        }
+        return parameterSetList;
     }
 
     @GetMapping("/sessions")
