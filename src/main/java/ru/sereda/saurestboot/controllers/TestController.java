@@ -18,7 +18,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class TestController {
 
     @Autowired
@@ -40,7 +40,4 @@ public class TestController {
         System.out.println(phoneRegions.toString());
         return null;
     }
-
-
-
 }

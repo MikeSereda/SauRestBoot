@@ -28,29 +28,29 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
     int sqlParametersetLimit;
 
     @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, boolean reduced, int limit) {
+    public Map<String, List<ParameterSet>> getParameters(LocalDateTime startTime, boolean reduced, int limit) {
         if (limit>sqlParametersetLimit){
             limit = sqlParametersetLimit;
         }
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
+        Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, reduced, limit));
+            deviceParametersMap.put(id,getParameters(id,startTime, reduced, limit));
         }
-        return deviceParameterSets;
+        return deviceParametersMap;
     }
 
     @Override
-    public List<ParameterSet> getParameters(LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
+    public Map<String, List<ParameterSet>> getParameters(LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
         if (limit>sqlParametersetLimit){
             limit = sqlParametersetLimit;
         }
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
+        Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
-            deviceParameterSets.addAll(getParameters(id,startTime, endTime, reduced, limit));
+            deviceParametersMap.put(id,getParameters(id,startTime, endTime, reduced, limit));
         }
-        return deviceParameterSets;
+        return deviceParametersMap;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
     }
 
     @Override
-    public List<ParameterSet> getUpdates(HashMap<String, LocalDateTime> lastPairs, boolean reduced, int limit) {
-        List<ParameterSet> deviceParameterSets = new ArrayList<>();
+    public Map<String, List<ParameterSet>> getUpdates(HashMap<String, LocalDateTime> lastPairs, boolean reduced, int limit) {
+        Map<String, List<ParameterSet>> parameters = new HashMap<>();
         for (String deviceId : lastPairs.keySet()){
             List<ParameterSet> currentParameterSet = new ArrayList<>();
             currentParameterSet.addAll(getParameters(deviceId,lastPairs.get(deviceId), reduced, limit));
@@ -80,9 +80,9 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
                     currentParameterSet.remove(0);
                 }
             }
-            deviceParameterSets.addAll(currentParameterSet);
+            parameters.put(deviceId,currentParameterSet);
         }
-        return deviceParameterSets;
+        return parameters;
     }
 
 
