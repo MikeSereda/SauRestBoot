@@ -32,10 +32,9 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
                               String txAlarm,
                               String rxAlarm,
                               String oduAlarm,
-                              String modemId,
                               boolean reachable,
                               String askerVersion) {
-        super(modemId, ebNo, ebNoRemote, timestampWotz);
+        super(ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
         this.temperature = temperature;
         this.txPowerLevelIncrease = txPowerLevelIncrease;
@@ -139,7 +138,6 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
                     (String) map.get("txAlarm"),
                     (String) map.get("rxAlarm"),
                     (String) map.get("oduAlarm"),
-                    (String) map.get("modemId"),
                     (Boolean) map.get("reachable"),
                     (String) map.get("askerVersion")));
         }

@@ -3,9 +3,9 @@ package ru.sereda.saurestboot.service.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.sereda.saurestboot.DAO.interfaces.DeviceParameterSetDAO;
+import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
-import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 
 import java.time.LocalDateTime;
@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DeviceParameterSetServiceImpl implements DeviceParameterSetService {
+public class ParameterSetServiceImpl implements ParameterSetService {
 
     @Autowired
-    DeviceParameterSetDAO parameterSetDAO;
+    ParameterSetDAO parameterSetDAO;
 
     @Autowired
     DeviceService deviceService;
@@ -35,7 +35,7 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
         Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
-            deviceParametersMap.put(id,getParameters(id,startTime, reduced, limit));
+            deviceParametersMap.put(id,getParameters(id,startTime, reduced, limit).get(id));
         }
         return deviceParametersMap;
     }
@@ -48,33 +48,36 @@ public class DeviceParameterSetServiceImpl implements DeviceParameterSetService 
         Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
         List<String> deviceIds = deviceService.getDeviceIds();
         for (String id : deviceIds){
-            deviceParametersMap.put(id,getParameters(id,startTime, endTime, reduced, limit));
+            deviceParametersMap.put(id,getParameters(id,startTime, endTime, reduced, limit).get(id));
         }
         return deviceParametersMap;
     }
 
     @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, boolean reduced, int limit) {
+    public Map<String, List<ParameterSet>> getParameters(String modemId, LocalDateTime startTime, boolean reduced, int limit) {
         if (limit>sqlParametersetLimit){
             limit = sqlParametersetLimit;
         }
-        return parameterSetDAO.getParameters(modemId, startTime, reduced, limit);
+        Map<String, List<ParameterSet>> parameters = new HashMap<>();
+        parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, reduced, limit));
+        return parameters;
     }
 
     @Override
-    public List<ParameterSet> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
+    public Map<String, List<ParameterSet>> getParameters(String modemId, LocalDateTime startTime, LocalDateTime endTime, boolean reduced, int limit) {
         if (limit>sqlParametersetLimit){
             limit = sqlParametersetLimit;
         }
-        return parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit);
+        Map<String, List<ParameterSet>> parameters = new HashMap<>();
+        parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
+        return parameters;
     }
 
     @Override
     public Map<String, List<ParameterSet>> getUpdates(HashMap<String, LocalDateTime> lastPairs, boolean reduced, int limit) {
         Map<String, List<ParameterSet>> parameters = new HashMap<>();
         for (String deviceId : lastPairs.keySet()){
-            List<ParameterSet> currentParameterSet = new ArrayList<>();
-            currentParameterSet.addAll(getParameters(deviceId,lastPairs.get(deviceId), reduced, limit));
+            List<ParameterSet> currentParameterSet = new ArrayList<>(getParameters(deviceId, lastPairs.get(deviceId), reduced, limit).get(deviceId));
             if (currentParameterSet.size()>0){
                 if (lastPairs.get(deviceId)==currentParameterSet.get(0).getParametersMap().get("timestampWotz")){
                     currentParameterSet.remove(0);

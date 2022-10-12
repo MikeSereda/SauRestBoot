@@ -3,17 +3,16 @@ package ru.sereda.saurestboot.DAO.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.sereda.saurestboot.DAO.interfaces.DeviceParameterSetDAO;
+import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.rowmappers.DeviceParameterSetMapper;
 import ru.sereda.saurestboot.rowmappers.DeviceReducedParameterSetMapper;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
-public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
+public class ParameterSetDAOImpl implements ParameterSetDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -32,7 +31,7 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
                     AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -62,7 +61,7 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
                     AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -87,7 +86,7 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     WITH counted_table AS
-                        (SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        (SELECT timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
                         WHERE modem_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
@@ -112,7 +111,7 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     WITH counted_table AS
-                        (SELECT modem_id, timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
+                        (SELECT timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
                         WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
@@ -132,14 +131,12 @@ public class DeviceParameterSetDAOImpl implements DeviceParameterSetDAO {
     @Override
     public LocalDateTime getLastUpdateTime() {
         String sql = "SELECT timestamp_wotz FROM parameters ORDER BY timestamp_wotz DESC LIMIT 1;";
-        LocalDateTime lastUpTime = jdbcTemplate.queryForObject(sql,LocalDateTime.class);
-        return lastUpTime;
+        return jdbcTemplate.queryForObject(sql,LocalDateTime.class);
     }
 
     @Override
     public LocalDateTime getLastUpdateTime(String modemId) {
         String sql = "SELECT timestamp_wotz FROM parameters WHERE modem_id=? ORDER BY timestamp_wotz DESC LIMIT 1;";
-        LocalDateTime lastUpTime = jdbcTemplate.queryForObject(sql,LocalDateTime.class,modemId);
-        return lastUpTime;
+        return jdbcTemplate.queryForObject(sql,LocalDateTime.class,modemId);
     }
 }

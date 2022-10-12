@@ -15,16 +15,14 @@ import java.util.Map;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class DeviceReducedParameterSet implements ParameterSet {
 
-    private String modemId;
     private final float ebNo;
     private final float ebNoRemote;
     private final LocalDateTime timestampWotz;
 
-    public DeviceReducedParameterSet(String modemId, float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
+    public DeviceReducedParameterSet(float ebNo, float ebNoRemote, LocalDateTime timestampWotz) {
         this.ebNo = ebNo;
         this.ebNoRemote = ebNoRemote;
         this.timestampWotz = timestampWotz.truncatedTo(ChronoUnit.SECONDS);
-        this.modemId = modemId;
     }
 
     @JsonIgnore
@@ -49,14 +47,6 @@ public class DeviceReducedParameterSet implements ParameterSet {
         return timestampWotz;
     }
 
-    public String getModemId() {
-        return modemId;
-    }
-
-    public void setModemId(String modemId) {
-        this.modemId = modemId;
-    }
-
     @Override
     public String toString() {
         return "DeviceReducedParameterSet{" +
@@ -70,7 +60,6 @@ public class DeviceReducedParameterSet implements ParameterSet {
         List<DeviceReducedParameterSet> parameterSetList = new ArrayList<>();
         for (Map<String,Object> map : mapList){
             parameterSetList.add(new DeviceReducedParameterSet(
-                    (String) map.get("modemId"),
                     (float) map.get("ebNo"),
                     (float) map.get("ebNoRemote"),
                     ((Timestamp)map.get("timestampWotz")).toLocalDateTime()));

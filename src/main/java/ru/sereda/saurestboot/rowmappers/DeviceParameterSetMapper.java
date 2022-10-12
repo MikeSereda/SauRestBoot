@@ -22,7 +22,6 @@ public class DeviceParameterSetMapper extends DeviceReducedParameterSetMapper{
                 rs.getString("tx_alarm"),
                 rs.getString("rx_alarm"),
                 rs.getString("odu_alarm"),
-                rs.getString("modem_id"),
                 rs.getBoolean("reachable"),
                 rs.getString("asker_version")
         );

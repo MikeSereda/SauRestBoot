@@ -3,7 +3,7 @@ package ru.sereda.saurestboot.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
-import ru.sereda.saurestboot.service.interfaces.DeviceParameterSetService;
+import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class ParametersController {
 
     @Autowired
-    DeviceParameterSetService parameterSetService;
+    ParameterSetService parameterSetService;
 
     @GetMapping("/updates")
     public Map<String, List<ParameterSet>> getLastUpdates(
@@ -60,13 +60,13 @@ public class ParametersController {
             }
         }
         else {
-            Map<String, List<ParameterSet>> outputMap = new HashMap<>();
+            Map<String, List<ParameterSet>> outputMap;
             if (endTime.isEmpty()){
-                outputMap.put(deviceId,parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),reduced,limit));
+                outputMap = parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),reduced,limit);
                 return outputMap;
             }
             else {
-                outputMap.put(deviceId,parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit));
+                outputMap = parameterSetService.getParameters(deviceId, LocalDateTime.parse(startTime),LocalDateTime.parse(endTime),reduced,limit);
                 return outputMap;
             }
         }
