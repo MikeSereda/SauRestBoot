@@ -1,6 +1,5 @@
 package ru.sereda.saurestboot.DAO.interfaces;
 
-import ru.sereda.saurestboot.businesslogic.Role;
 import ru.sereda.saurestboot.businesslogic.User;
 
 import java.util.List;

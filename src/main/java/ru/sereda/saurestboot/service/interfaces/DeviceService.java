@@ -1,6 +1,5 @@
 package ru.sereda.saurestboot.service.interfaces;
 
-import org.springframework.http.ResponseEntity;
 import ru.sereda.saurestboot.businesslogic.Device;
 
 import java.util.List;

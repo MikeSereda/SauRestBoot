@@ -1,7 +1,6 @@
 package ru.sereda.saurestboot.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.DAO.interfaces.RoleDAO;
 import ru.sereda.saurestboot.DAO.interfaces.UserDAO;

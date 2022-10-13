@@ -1,15 +1,11 @@
 package ru.sereda.saurestboot.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.businesslogic.User;
-import ru.sereda.saurestboot.security.jwt.JwtUser;
 import ru.sereda.saurestboot.security.jwt.JwtUserFactory;
 import ru.sereda.saurestboot.service.interfaces.UserService;
 
