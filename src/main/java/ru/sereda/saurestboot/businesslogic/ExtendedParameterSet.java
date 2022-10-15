@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeviceParameterSet extends DeviceReducedParameterSet {
+public class ExtendedParameterSet extends ReducedParameterSet {
 
 
     private final int rsl;
@@ -21,19 +21,19 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
     private final boolean reachable;
     private final String askerVersion;
 
-    public DeviceParameterSet(float ebNo,
-                              float ebNoRemote,
-                              LocalDateTime timestampWotz,
-                              int rsl,
-                              int temperature,
-                              float txPowerLevelIncrease,
-                              float ber,
-                              String unitAlarm,
-                              String txAlarm,
-                              String rxAlarm,
-                              String oduAlarm,
-                              boolean reachable,
-                              String askerVersion) {
+    public ExtendedParameterSet(float ebNo,
+                                float ebNoRemote,
+                                LocalDateTime timestampWotz,
+                                int rsl,
+                                int temperature,
+                                float txPowerLevelIncrease,
+                                float ber,
+                                String unitAlarm,
+                                String txAlarm,
+                                String rxAlarm,
+                                String oduAlarm,
+                                boolean reachable,
+                                String askerVersion) {
         super(ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
         this.temperature = temperature;
@@ -68,7 +68,7 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
 
     @Override
     public String toString() {
-        return "DeviceParameterSet{" +
+        return "ExtendedParameterSet{" +
                 "rsl=" + rsl +
                 ", temperature=" + temperature +
                 ", txPowerLevelIncrease=" + txPowerLevelIncrease +
@@ -123,10 +123,10 @@ public class DeviceParameterSet extends DeviceReducedParameterSet {
         return askerVersion;
     }
 
-    static public List<DeviceParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
-        List<DeviceParameterSet> parameterSetList = new ArrayList<>();
+    static public List<ExtendedParameterSet> parameterSetWrapper(List<Map<String, Object>> mapList) {
+        List<ExtendedParameterSet> parameterSetList = new ArrayList<>();
         for (Map<String,Object> map : mapList){
-            parameterSetList.add(new DeviceParameterSet(
+            parameterSetList.add(new ExtendedParameterSet(
                     (float) map.get("ebNo"),
                     (float) map.get("ebNoRemote"),
                     ((Timestamp)map.get("timestampWotz")).toLocalDateTime(),

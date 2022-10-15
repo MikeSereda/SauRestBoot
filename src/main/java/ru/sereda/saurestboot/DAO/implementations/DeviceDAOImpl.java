@@ -38,6 +38,13 @@ public class DeviceDAOImpl implements DeviceDAO {
         return deviceIds;
     }
 
+    @Override
+    public List<String> getActiveDeviceIds() {
+        String sql = "SELECT DISTINCT id FROM devices WHERE active=true order by id";
+        List<String> deviceIds = jdbcTemplate.queryForList(sql,String.class);
+        return deviceIds;
+    }
+
     public List<Device> getDevices(){
         String sql = "SELECT * FROM devices";
         List<Device> devices = jdbcTemplate.query(sql, new DeviceMapperImpl());

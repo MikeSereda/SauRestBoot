@@ -9,4 +9,5 @@ public interface DeviceDAO {
     List<Device> getDevices(String deviceType);
     List<String> getDeviceTypes();
     List<String> getDeviceIds();
+    List<String> getActiveDeviceIds();
 }

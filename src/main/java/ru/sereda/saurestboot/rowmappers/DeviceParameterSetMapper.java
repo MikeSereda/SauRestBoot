@@ -1,6 +1,6 @@
 package ru.sereda.saurestboot.rowmappers;
 
-import ru.sereda.saurestboot.businesslogic.DeviceParameterSet;
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 public class DeviceParameterSetMapper extends DeviceReducedParameterSetMapper{
     @Override
     public ParameterSet mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new DeviceParameterSet(
+        return new ExtendedParameterSet(
                 rs.getFloat("eb_no"),
                 rs.getFloat("eb_no_remote"),
                 rs.getTimestamp("timestamp_wotz").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS),

@@ -9,4 +9,5 @@ public interface DeviceService {
     Device getDevice(String id);
     List<String> getDeviceTypes();
     List<String> getDeviceIds();
+    List<String> getActiveDeviceIds();
 }

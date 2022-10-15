@@ -38,4 +38,9 @@ public class DeviceServiceImpl implements DeviceService {
     public List<String> getDeviceIds() {
         return deviceDAO.getDeviceIds();
     }
+
+    @Override
+    public List<String> getActiveDeviceIds() {
+        return deviceDAO.getActiveDeviceIds();
+    }
 }

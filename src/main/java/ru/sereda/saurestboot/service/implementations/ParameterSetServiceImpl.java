@@ -33,7 +33,7 @@ public class ParameterSetServiceImpl implements ParameterSetService {
             limit = sqlParametersetLimit;
         }
         Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
+        List<String> deviceIds = deviceService.getActiveDeviceIds();
         for (String id : deviceIds){
             deviceParametersMap.put(id,getParameters(id,startTime, reduced, limit).get(id));
         }
@@ -46,7 +46,7 @@ public class ParameterSetServiceImpl implements ParameterSetService {
             limit = sqlParametersetLimit;
         }
         Map<String, List<ParameterSet>> deviceParametersMap = new HashMap<>();
-        List<String> deviceIds = deviceService.getDeviceIds();
+        List<String> deviceIds = deviceService.getActiveDeviceIds();
         for (String id : deviceIds){
             deviceParametersMap.put(id,getParameters(id,startTime, endTime, reduced, limit).get(id));
         }
