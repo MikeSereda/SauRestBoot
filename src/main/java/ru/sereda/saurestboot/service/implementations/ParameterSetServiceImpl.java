@@ -7,6 +7,7 @@ import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
+import ru.sereda.saurestboot.service.interfaces.PhoneService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,6 +18,8 @@ import java.util.Map;
 
 @Service
 public class ParameterSetServiceImpl implements ParameterSetService {
+    @Autowired
+    PhoneService phoneService;
 
     @Autowired
     ParameterSetDAO parameterSetDAO;
