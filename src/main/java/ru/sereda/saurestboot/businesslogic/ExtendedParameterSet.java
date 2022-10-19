@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ExtendedParameterSet extends ReducedParameterSet {
-
-
     private final int rsl;
     private final int temperature;
     private final float txPowerLevelIncrease;
@@ -20,6 +18,8 @@ public class ExtendedParameterSet extends ReducedParameterSet {
     private final String oduAlarm;
     private final boolean reachable;
     private final String askerVersion;
+
+    private final float frequencyOffset;
 
     public ExtendedParameterSet(float ebNo,
                                 float ebNoRemote,
@@ -33,6 +33,7 @@ public class ExtendedParameterSet extends ReducedParameterSet {
                                 String rxAlarm,
                                 String oduAlarm,
                                 boolean reachable,
+//                                float frequencyOffset,
                                 String askerVersion) {
         super(ebNo, ebNoRemote, timestampWotz);
         this.rsl = rsl;
@@ -44,6 +45,7 @@ public class ExtendedParameterSet extends ReducedParameterSet {
         this.rxAlarm = rxAlarm;
         this.oduAlarm = oduAlarm;
         this.reachable = reachable;
+        this.frequencyOffset = 0;
         this.askerVersion = askerVersion;
     }
 
@@ -63,6 +65,7 @@ public class ExtendedParameterSet extends ReducedParameterSet {
         parametersMap.put("oduAlarm",oduAlarm);
         parametersMap.put("reachable",reachable);
         parametersMap.put("askerVersion",askerVersion);
+        parametersMap.put("frequencyOffset",frequencyOffset);
         return parametersMap;
     }
 
@@ -77,9 +80,9 @@ public class ExtendedParameterSet extends ReducedParameterSet {
                 ", txAlarm='" + txAlarm + '\'' +
                 ", rxAlarm='" + rxAlarm + '\'' +
                 ", oduAlarm='" + oduAlarm + '\'' +
-                ", ebNo=" + super.getEbNo() +
-                ", ebNoRemote=" + super.getEbNoRemote() +
-                ", timestampWotz=" + super.getTimestampWotz()+
+                ", reachable=" + reachable +
+                ", askerVersion='" + askerVersion + '\'' +
+                ", frequencyOffset=" + frequencyOffset +
                 '}';
     }
 
@@ -139,6 +142,7 @@ public class ExtendedParameterSet extends ReducedParameterSet {
                     (String) map.get("rxAlarm"),
                     (String) map.get("oduAlarm"),
                     (Boolean) map.get("reachable"),
+//                    (float) map.get("frequencyOffset"),
                     (String) map.get("askerVersion")));
         }
         return parameterSetList;
