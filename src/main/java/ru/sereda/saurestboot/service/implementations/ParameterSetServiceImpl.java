@@ -72,6 +72,25 @@ public class ParameterSetServiceImpl implements ParameterSetService {
             limit = sqlParametersetLimit;
         }
         Map<String, List<ParameterSet>> parameters = new HashMap<>();
+        int count = parameterSetDAO.parameterSetCount(modemId,startTime,endTime);
+        if (false){
+            int approximating = count / 1000;
+            List<ParameterSet> parameterSetList = new ArrayList<>();
+            Map<LocalDateTime, LocalDateTime> timePairs = parameterSetDAO.approximatingTimestamps(modemId,approximating);
+            for (LocalDateTime start : timePairs.keySet()){
+                LocalDateTime end = timePairs.get(start);
+                if (end!=null){
+                    parameterSetList.add(parameterSetDAO.getApproximatedSet(modemId,start,timePairs.get(start)));
+                }
+                else{
+                    parameterSetList.add(parameterSetDAO.getApproximatedSet(modemId,start));
+                }
+            }
+            parameters.put(modemId,parameterSetList);
+        }
+        else {
+//            parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
+        }
         parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
         return parameters;
     }
@@ -112,7 +131,7 @@ public class ParameterSetServiceImpl implements ParameterSetService {
             upFrom = LocalDateTime.now().minusHours(2);
         }
         Map<String, List<ParameterSet>> parameters = new HashMap<>();
-        List<ParameterSet> parameterSetList = parameterSetDAO.getParameters(modemId,upFrom,true,2500);
+        List<ParameterSet> parameterSetList = parameterSetDAO.getParameters(modemId,upFrom,true,500);
         parameters.put(modemId,parameterSetList);
         return parameters;
     }
