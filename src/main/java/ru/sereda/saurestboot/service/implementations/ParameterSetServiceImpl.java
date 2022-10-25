@@ -73,10 +73,12 @@ public class ParameterSetServiceImpl implements ParameterSetService {
         }
         Map<String, List<ParameterSet>> parameters = new HashMap<>();
         int count = parameterSetDAO.parameterSetCount(modemId,startTime,endTime);
-        if (false){
+//        if (count>1500){
             int approximating = count / 1000;
+            System.out.println(approximating);
             List<ParameterSet> parameterSetList = new ArrayList<>();
             Map<LocalDateTime, LocalDateTime> timePairs = parameterSetDAO.approximatingTimestamps(modemId,approximating);
+            System.out.println(timePairs);
             for (LocalDateTime start : timePairs.keySet()){
                 LocalDateTime end = timePairs.get(start);
                 if (end!=null){
@@ -87,10 +89,10 @@ public class ParameterSetServiceImpl implements ParameterSetService {
                 }
             }
             parameters.put(modemId,parameterSetList);
-        }
-        else {
+//        }
+//        else {
 //            parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
-        }
+//        }
         parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
         return parameters;
     }

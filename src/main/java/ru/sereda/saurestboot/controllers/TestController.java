@@ -8,7 +8,9 @@ import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.SessionService;
 import ru.sereda.saurestboot.service.interfaces.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -33,5 +35,11 @@ public class TestController {
     ){
         System.out.println(phoneRegions.toString());
         return null;
+    }
+
+    @GetMapping("/approximted")
+    public Map<String,List<ParameterSet>> approximated(){
+
+        return parameterSetService.getParameters("cdm115", LocalDateTime.parse("2022-07-22T15:26:17"),LocalDateTime.parse("2022-07-22T15:27:47"),true,1000);
     }
 }

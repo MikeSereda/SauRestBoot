@@ -51,8 +51,6 @@ public class ParametersController {
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
             @RequestParam(name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
             @RequestParam(name = "reduced",required = false, defaultValue = "false") boolean reduced){
-//        startTime=startTime.replace(' ','T');
-//        endTime=endTime.replace(' ','T');
         if (deviceId.isEmpty()){
             if (endTime.isEmpty()){
                 return parameterSetService.getParameters(LocalDateTime.parse(startTime,formatter),reduced,limit);
