@@ -17,6 +17,7 @@ public class TextController {
     public Map<String,Object> greeting(){
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("headerText","Информационный заголовок");
+        returnMap.put("on_monday","Понедельничный вариант");
         returnMap.put("bodyText","Обкатка проекта");
         return returnMap;
     }
