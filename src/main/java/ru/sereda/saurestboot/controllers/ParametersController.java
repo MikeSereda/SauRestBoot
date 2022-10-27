@@ -23,7 +23,7 @@ public class ParametersController {
     @GetMapping("/updates")
     public Map<String, List<ParameterSet>> getLastUpdates(
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
-            @RequestParam(name = "relative",required = false, defaultValue = "true") boolean reduced)
+            @RequestParam(name = "relative",required = false, defaultValue = "false") boolean reduced)
     {
         Map<String, List<ParameterSet>> parameterSetList;
         if (deviceId.isEmpty()){
