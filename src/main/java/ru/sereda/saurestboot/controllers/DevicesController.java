@@ -13,10 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 public class DevicesController {
-
     @Autowired
     DeviceService deviceService;
-
     @GetMapping("/devices/{deviceId}")
     public ResponseEntity<Device> getDevice(@PathVariable("deviceId") String deviceId){
         Device device = deviceService.getDevice(deviceId);
@@ -27,12 +25,10 @@ public class DevicesController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
     @GetMapping("/devices")
     public List<Device> getDevices(@RequestParam(name = "type",required = false,defaultValue = "") String deviceType){
         return deviceService.getDevices(deviceType);
     }
-
     @GetMapping("/device-types")
     public List<String> getDeviceTypes(){
         return deviceService.getDeviceTypes();

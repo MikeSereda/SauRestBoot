@@ -3,8 +3,10 @@ package ru.sereda.saurestboot.service.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.sereda.saurestboot.DAO.implementations.DeltasSetDAOImpl;
 import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
+import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 import ru.sereda.saurestboot.service.interfaces.PhoneService;
@@ -23,6 +25,9 @@ public class ParameterSetServiceImpl implements ParameterSetService {
 
     @Autowired
     ParameterSetDAO parameterSetDAO;
+
+    @Autowired
+    DeltasSetDAOImpl deltasSetDAO;
 
     @Autowired
     DeviceService deviceService;
@@ -94,6 +99,54 @@ public class ParameterSetServiceImpl implements ParameterSetService {
 //            parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
 //        }
         parameters.put(modemId,parameterSetDAO.getParameters(modemId, startTime, endTime, reduced, limit));
+        return parameters;
+    }
+
+    @Override
+    public Map<String, List<ReducedParameterSet>> getDeltas(LocalDateTime startTime, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+        Map<String, List<ReducedParameterSet>> deviceParametersMap = new HashMap<>();
+        List<String> deviceIds = deviceService.getActiveDeviceIds();
+        for (String id : deviceIds){
+            deviceParametersMap.put(id,getDeltas(id, startTime, limit).get(id));
+        }
+        return deviceParametersMap;
+    }
+
+    @Override
+    public Map<String, List<ReducedParameterSet>> getDeltas(LocalDateTime startTime, LocalDateTime endTime, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+        Map<String, List<ReducedParameterSet>> deviceParametersMap = new HashMap<>();
+        List<String> deviceIds = deviceService.getActiveDeviceIds();
+        for (String id : deviceIds){
+            deviceParametersMap.put(id,getDeltas(id, startTime, endTime, limit).get(id));
+        }
+        return deviceParametersMap;
+    }
+
+    @Override
+    public Map<String, List<ReducedParameterSet>> getDeltas(String modemId, LocalDateTime startTime, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+        Map<String, List<ReducedParameterSet>> parameters = new HashMap<>();
+        List<ReducedParameterSet> parameterSets = deltasSetDAO.getParameters(modemId, startTime, limit);
+        parameters.put(modemId,parameterSets);
+        return parameters;
+    }
+
+    @Override
+    public Map<String, List<ReducedParameterSet>> getDeltas(String modemId, LocalDateTime startTime, LocalDateTime endTime, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+        Map<String, List<ReducedParameterSet>> parameters = new HashMap<>();
+        List<ReducedParameterSet> parameterSets = deltasSetDAO.getParameters(modemId, startTime, endTime, limit);
+        parameters.put(modemId,parameterSets);
         return parameters;
     }
 
