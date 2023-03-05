@@ -20,16 +20,12 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
 public class Config {
-
     @Value("${spring.datasource.url}")
     String datasourceUrl;
     @Value("${spring.datasource.username}")
     String datasourceUsername;
     @Value("${spring.datasource.password}")
     String datasourcePassword;
-
-
-
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

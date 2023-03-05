@@ -6,7 +6,6 @@ import ru.sereda.saurestboot.businesslogic.*;
 import ru.sereda.saurestboot.service.interfaces.DeviceService;
 import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
 import ru.sereda.saurestboot.service.interfaces.SessionService;
-import ru.sereda.saurestboot.service.interfaces.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,9 +24,6 @@ public class TestController {
 
     @Autowired
     DeviceService deviceService;
-
-    @Autowired
-    UserService userService;
 
     @PostMapping("/phones")
     public PhoneRegion addPhoneRegions(
