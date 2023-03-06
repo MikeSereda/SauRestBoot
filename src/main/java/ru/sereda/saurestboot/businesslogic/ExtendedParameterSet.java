@@ -1,5 +1,7 @@
 package ru.sereda.saurestboot.businesslogic;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,19 +9,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExtendedParameterSet extends ReducedParameterSet {
-    private final int rsl;
-    private final int temperature;
-    private final float txPowerLevelIncrease;
     private final float ber;
+    private float txPowerLevel;
+    private final float txPowerLevelIncrease;
+    private final int rsl;
+    private String faults;
+    private final int temperature;
+    private float frequencyOffset;
+    private final boolean reachable;
+    private int testMode;
+    private String framingMode;
+    private int delay;
+    private String carrierState;
     private final String unitAlarm;
     private final String txAlarm;
     private final String rxAlarm;
     private final String oduAlarm;
-    private final boolean reachable;
     private final String askerVersion;
-
-    private final float frequencyOffset;
+    private float ebNoDelta;
+    private float ebNoRemoteDelta;
 
     public ExtendedParameterSet(float ebNo,
                                 float ebNoRemote,
@@ -45,7 +55,6 @@ public class ExtendedParameterSet extends ReducedParameterSet {
         this.rxAlarm = rxAlarm;
         this.oduAlarm = oduAlarm;
         this.reachable = reachable;
-        this.frequencyOffset = 0;
         this.askerVersion = askerVersion;
     }
 
@@ -146,5 +155,77 @@ public class ExtendedParameterSet extends ReducedParameterSet {
                     (String) map.get("askerVersion")));
         }
         return parameterSetList;
+    }
+
+    public float getTxPowerLevel() {
+        return txPowerLevel;
+    }
+
+    public void setTxPowerLevel(float txPowerLevel) {
+        this.txPowerLevel = txPowerLevel;
+    }
+
+    public String getFaults() {
+        return faults;
+    }
+
+    public void setFaults(String faults) {
+        this.faults = faults;
+    }
+
+    public float getFrequencyOffset() {
+        return frequencyOffset;
+    }
+
+    public int getTestMode() {
+        return testMode;
+    }
+
+    public void setTestMode(int testMode) {
+        this.testMode = testMode;
+    }
+
+    public String getFramingMode() {
+        return framingMode;
+    }
+
+    public void setFramingMode(String framingMode) {
+        this.framingMode = framingMode;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public String getCarrierState() {
+        return carrierState;
+    }
+
+    public void setCarrierState(String carrierState) {
+        this.carrierState = carrierState;
+    }
+
+    public void setFrequencyOffset(float frequencyOffset) {
+        this.frequencyOffset = frequencyOffset;
+    }
+
+    public float getEbNoDelta() {
+        return ebNoDelta;
+    }
+
+    public void setEbNoDelta(float ebNoDelta) {
+        this.ebNoDelta = ebNoDelta;
+    }
+
+    public float getEbNoRemoteDelta() {
+        return ebNoRemoteDelta;
+    }
+
+    public void setEbNoRemoteDelta(float ebNoRemoteDelta) {
+        this.ebNoRemoteDelta = ebNoRemoteDelta;
     }
 }

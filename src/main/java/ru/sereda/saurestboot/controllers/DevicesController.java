@@ -15,8 +15,10 @@ import java.util.List;
 public class DevicesController {
     @Autowired
     DeviceService deviceService;
-    @GetMapping("/devices/{deviceId}")
-    public ResponseEntity<Device> getDevice(@PathVariable("deviceId") String deviceId){
+    @GetMapping("/device")
+    public ResponseEntity<Device> getDevice(
+            @RequestParam(name = "deviceId") String deviceId
+    ){
         Device device = deviceService.getDevice(deviceId);
         if (device!=null){
             return new ResponseEntity<>(device, HttpStatus.OK);
@@ -26,11 +28,23 @@ public class DevicesController {
         }
     }
     @GetMapping("/devices")
-    public List<Device> getDevices(@RequestParam(name = "type",required = false,defaultValue = "") String deviceType){
+    public List<Device> getDevices(
+            @RequestParam(name = "type",required = false,defaultValue = "") String deviceType
+    ){
         return deviceService.getDevices(deviceType);
     }
     @GetMapping("/device-types")
     public List<String> getDeviceTypes(){
         return deviceService.getDeviceTypes();
+    }
+
+    @PostMapping("/devices")
+    public List<Device> addDevices(@RequestBody List<Device> addingDevices){
+        return deviceService.addDevices(addingDevices); // not realized
+    }
+
+    @DeleteMapping("/device")
+    public Device removeDevice(@RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId){
+        return deviceService.removeDevice(deviceId);
     }
 }

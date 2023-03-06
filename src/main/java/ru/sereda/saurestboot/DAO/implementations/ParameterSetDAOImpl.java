@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 import ru.sereda.saurestboot.rowmappers.DeviceParameterSetMapper;
 import ru.sereda.saurestboot.rowmappers.DeviceReducedParameterSetMapper;
+import ru.sereda.saurestboot.rowmappers.ExtendedParameterSetMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -177,5 +179,38 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
     public LocalDateTime getLastUpdateTime(String modemId) {
         String sql = "SELECT timestamp_wotz FROM parameters WHERE modem_id=? ORDER BY timestamp_wotz DESC LIMIT 1;";
         return jdbcTemplate.queryForObject(sql,LocalDateTime.class,modemId);
+    }
+
+    @Override
+    public List<ExtendedParameterSet> getRequiredParameters(
+            String requiredValues, String modemId, LocalDateTime requiredStartTime,
+            LocalDateTime requiredEndTime, int limit) {
+        ExtendedParameterSetMapper mapper = new ExtendedParameterSetMapper(requiredValues);
+        String sql = """
+                    SELECT * FROM(
+                    SELECT"""+
+                requiredValues
+                    +"""
+                    FROM parameters WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<?
+                    ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
+                    """;
+        return jdbcTemplate.query(sql, mapper, modemId, requiredStartTime, requiredEndTime, limit);
+    }
+
+    @Override
+    public List<ExtendedParameterSet> getRequiredParameters(
+            String requiredValues, String modemId, LocalDateTime requiredStartTime, int limit) {
+        ExtendedParameterSetMapper mapper = new ExtendedParameterSetMapper(requiredValues);
+        String sql = """
+                    SELECT * FROM(
+                    SELECT"""+
+                requiredValues
+                +"""
+                    FROM parameters WHERE modem_id=? AND timestamp_wotz>?
+                    ORDER BY timestamp_wotz DESC LIMIT ?
+                    ) AS T ORDER BY timestamp_wotz
+                    """;
+        return jdbcTemplate.query(sql, mapper, modemId, requiredStartTime, limit);
     }
 }

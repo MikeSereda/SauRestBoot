@@ -26,14 +26,14 @@ public class TestController {
     DeviceService deviceService;
 
     @PostMapping("/phones")
-    public PhoneRegion addPhoneRegions(
+    public List<PhoneRegion> addPhoneRegions(
             @RequestBody List<PhoneRegion> phoneRegions
     ){
         System.out.println(phoneRegions.toString());
-        return null;
+        return phoneRegions;
     }
 
-    @GetMapping("/approximted")
+    @GetMapping("/approximated")
     public Map<String,List<ParameterSet>> approximated(){
 
         return parameterSetService.getParameters("cdm115", LocalDateTime.parse("2022-07-22T15:26:17"),LocalDateTime.parse("2022-07-22T15:27:47"),true,1000);

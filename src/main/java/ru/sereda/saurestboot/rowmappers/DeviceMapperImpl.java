@@ -15,7 +15,14 @@ public class DeviceMapperImpl implements DeviceMapper{
         deviceImpl.setPort(rs.getInt("port"));
         deviceImpl.setLocation(rs.getString("location"));
         deviceImpl.setDescription(rs.getString("description"));
-        deviceImpl.setActive(Boolean.parseBoolean(rs.getString("active")));
+        deviceImpl.setActive(rs.getBoolean("active"));
+        deviceImpl.setDeviceType(rs.getString("device_type"));
+        deviceImpl.setProtocol(rs.getString("protocol"));
+        deviceImpl.setDevAddress(rs.getString("dev_address"));
+        deviceImpl.setLogin1(rs.getString("login"));
+        deviceImpl.setPassword1(rs.getString("password"));
+        deviceImpl.setLogin2(rs.getString("login_alter"));
+        deviceImpl.setPassword2(rs.getString("password_alter"));
         return deviceImpl;
     }
 }

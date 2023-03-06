@@ -25,6 +25,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public List<Device> getDevices() {
+        return deviceDAO.getDevices();
+    }
+
+    @Override
     public Device getDevice(String id) {
         return deviceDAO.getDevice(id);
     }
@@ -43,4 +48,19 @@ public class DeviceServiceImpl implements DeviceService {
     public List<String> getActiveDeviceIds() {
         return deviceDAO.getActiveDeviceIds();
     }
+
+    @Override
+    public List<Device> addDevices(List<Device> addingDevices) {
+        return deviceDAO.addDevices(addingDevices);
+    }
+
+    @Override
+    public Device removeDevice(String deviceId) {
+        if (getDevice(deviceId)!=null){
+            return deviceDAO.removeDevice(deviceId);
+        }
+        else return null;
+    }
+
+
 }

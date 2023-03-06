@@ -19,14 +19,14 @@ public class DeviceDAOImpl implements DeviceDAO {
 
     @Override
     public List<Device> getDevices(String deviceType) {
-        String sql = "SELECT * FROM devices WHERE type=?";
+        String sql = "SELECT * FROM devices WHERE device_type=?";
         List<Device> devices = jdbcTemplate.query(sql, new DeviceMapperImpl(), deviceType);
         return devices;
     }
 
     @Override
     public List<String> getDeviceTypes() {
-        String sql = "SELECT DISTINCT type FROM devices order by type";
+        String sql = "SELECT DISTINCT device_type FROM devices order by device_type";
         List<String> types = jdbcTemplate.queryForList(sql,String.class);
         return types;
     }
@@ -43,6 +43,16 @@ public class DeviceDAOImpl implements DeviceDAO {
         String sql = "SELECT DISTINCT id FROM devices WHERE active=true order by id";
         List<String> deviceIds = jdbcTemplate.queryForList(sql,String.class);
         return deviceIds;
+    }
+
+    @Override
+    public List<Device> addDevices(List<Device> addingDevices) {
+        return null; // TODO: 06.03.2023 add sql for adding devices
+    }
+
+    @Override
+    public Device removeDevice(String deviceId) {
+        return null; // TODO: 06.03.2023 add sql for deleting devices
     }
 
     public List<Device> getDevices(){

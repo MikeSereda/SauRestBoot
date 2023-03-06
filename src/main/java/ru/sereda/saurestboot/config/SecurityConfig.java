@@ -30,8 +30,8 @@ public class SecurityConfig {
                         pr +"device-types", pr +"phones/**",
                         pr +"sessions/**", pr +"approximated/**",
                         pr +"greet/**", pr +"popups").permitAll()
-                .requestMatchers(HttpMethod.POST,"**").hasAnyAuthority("OPERATOR", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE,"**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST,pr+"**").hasAnyAuthority("SAT_OPERATOR", "SAT_ADMIN", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE,pr+"**").hasAnyAuthority("SAT_ADMIN", "ADMIN")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//??????
                 .and()

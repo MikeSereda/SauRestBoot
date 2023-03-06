@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.sereda.saurestboot.DAO.implementations.DeltasSetDAOImpl;
 import ru.sereda.saurestboot.DAO.interfaces.ParameterSetDAO;
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
@@ -12,11 +13,9 @@ import ru.sereda.saurestboot.service.interfaces.DeviceService;
 import ru.sereda.saurestboot.service.interfaces.PhoneService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ParameterSetServiceImpl implements ParameterSetService {
@@ -34,6 +33,7 @@ public class ParameterSetServiceImpl implements ParameterSetService {
 
     @Value("${sql.parameters.parameterset.limit}")
     int sqlParametersetLimit;
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Override
     public Map<String, List<ParameterSet>> getParameters(LocalDateTime startTime, boolean reduced, int limit) {
@@ -190,4 +190,44 @@ public class ParameterSetServiceImpl implements ParameterSetService {
         parameters.put(modemId,parameterSetList);
         return parameters;
     }
+
+    @Override
+    public Map<String, List<ExtendedParameterSet>> getRequiredParameters(Set<String> requiredValues, String modemId, String startTime, String endTime, int limit) {
+        if (limit>sqlParametersetLimit){
+            limit = sqlParametersetLimit;
+        }
+
+        requiredValues.retainAll(possibleParametersSet);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(" timestamp_wotz");
+        for (String parameter : requiredValues){
+            stringBuilder.append(", "+parameter);
+        }
+
+        Map<String, List<ExtendedParameterSet>> parameters = new HashMap<>();
+        LocalDateTime requiredStartTime = LocalDateTime.parse(startTime,formatter);
+        if (endTime!=null){
+            LocalDateTime requiredEndTime = LocalDateTime.parse(endTime,formatter);
+            parameters.put(modemId,parameterSetDAO.getRequiredParameters(stringBuilder.toString(), modemId, requiredStartTime, requiredEndTime, limit));
+        }
+        else {
+            parameters.put(modemId,parameterSetDAO.getRequiredParameters(stringBuilder.toString(), modemId, requiredStartTime, limit));
+        }
+        return parameters;
+    }
+
+    @Override
+    public Map<String, List<ExtendedParameterSet>> getRequiredParameters(Set<String> requiredValues, String startTime, String endTime, int limit) {
+        Map<String, List<ExtendedParameterSet>> deviceParametersMap = new HashMap<>();
+        List<String> deviceIds = deviceService.getActiveDeviceIds();
+        for (String id : deviceIds){
+            deviceParametersMap.put(id, getRequiredParameters(requiredValues, id, startTime, endTime, limit).get(id));
+        }
+        return deviceParametersMap;
+    }
+
+    private String[] possibleParameters = new String[]{
+            ""
+    };
+    private Set<String> possibleParametersSet = new TreeSet<>(Set.of(possibleParameters));
 }

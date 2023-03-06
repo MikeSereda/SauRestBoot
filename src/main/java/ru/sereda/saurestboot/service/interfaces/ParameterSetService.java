@@ -1,5 +1,6 @@
 package ru.sereda.saurestboot.service.interfaces;
 
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ParameterSetService {
 
@@ -31,4 +33,8 @@ public interface ParameterSetService {
 
     Map<String, List<ParameterSet>> getLastUpdates(boolean relativeTime);
     Map<String, List<ParameterSet>> getLastUpdates(String modemId, boolean relativeTime);
+
+    Map<String, List<ExtendedParameterSet>> getRequiredParameters(Set<String> requiredValues, String modemId, String startTime, String endTime, int limit);
+    Map<String, List<ExtendedParameterSet>> getRequiredParameters(Set<String> requiredValues, String startTime, String endTime, int limit);
+
 }

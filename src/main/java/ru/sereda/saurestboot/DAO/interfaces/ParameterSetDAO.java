@@ -1,9 +1,9 @@
 package ru.sereda.saurestboot.DAO.interfaces;
 
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -23,4 +23,8 @@ public interface ParameterSetDAO {
 
     LocalDateTime getLastUpdateTime();
     LocalDateTime getLastUpdateTime(String modemId);
+
+    List<ExtendedParameterSet> getRequiredParameters(String requiredValues, String modemId, LocalDateTime requiredStartTime, LocalDateTime requiredEndTime, int limit);
+
+    List<ExtendedParameterSet> getRequiredParameters(String requiredValues, String modemId, LocalDateTime requiredStartTime, int limit);
 }

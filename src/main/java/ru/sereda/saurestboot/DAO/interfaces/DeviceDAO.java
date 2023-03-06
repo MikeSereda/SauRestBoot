@@ -10,4 +10,8 @@ public interface DeviceDAO {
     List<String> getDeviceTypes();
     List<String> getDeviceIds();
     List<String> getActiveDeviceIds();
+
+    List<Device> addDevices(List<Device> addingDevices);
+
+    Device removeDevice(String deviceId);
 }

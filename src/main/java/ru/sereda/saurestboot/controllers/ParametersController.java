@@ -2,6 +2,7 @@ package ru.sereda.saurestboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.sereda.saurestboot.businesslogic.ExtendedParameterSet;
 import ru.sereda.saurestboot.businesslogic.ParameterSet;
 import ru.sereda.saurestboot.businesslogic.ReducedParameterSet;
 import ru.sereda.saurestboot.service.interfaces.ParameterSetService;
@@ -11,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -24,14 +26,14 @@ public class ParametersController {
     @GetMapping("/updates")
     public Map<String, List<ParameterSet>> getLastUpdates(
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
-            @RequestParam(name = "relative",required = false, defaultValue = "false") boolean reduced)
+            @RequestParam(name = "relativeTime",required = false, defaultValue = "false") boolean relativeTime)
     {
         Map<String, List<ParameterSet>> parameterSetList;
         if (deviceId.isEmpty()){
-            parameterSetList = parameterSetService.getLastUpdates(reduced);
+            parameterSetList = parameterSetService.getLastUpdates(relativeTime);
         }
         else{
-            parameterSetList = parameterSetService.getLastUpdates(deviceId,reduced);
+            parameterSetList = parameterSetService.getLastUpdates(deviceId,relativeTime);
         }
         return parameterSetList;
     }
@@ -108,5 +110,19 @@ public class ParametersController {
                 return outputMap;
             }
         }
+    }
+
+    @PostMapping("/parameters")
+    public Map<String, List<ExtendedParameterSet>> getParameters(
+            @RequestParam(name = "startTime") String startTime,
+            @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
+            @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId,
+            @RequestParam
+                    (name = "limit", required = false, defaultValue = "${sql.parameters.parameterset.limit}") int limit,
+            @RequestBody Set<String> requiredValues){
+        if (deviceId.isEmpty()){
+            return parameterSetService.getRequiredParameters(requiredValues, startTime, endTime, limit);
+        }
+        return parameterSetService.getRequiredParameters(requiredValues, deviceId, startTime, endTime, limit);
     }
 }
