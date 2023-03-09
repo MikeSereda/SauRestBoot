@@ -22,7 +22,7 @@ public class SessionDAOImpl implements SessionDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Value("${sql.parameters.session.interval}")
+    @Value("${sql.parameters.parameterset.interval}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime lag;
     @Override

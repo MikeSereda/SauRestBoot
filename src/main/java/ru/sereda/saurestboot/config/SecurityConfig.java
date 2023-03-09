@@ -29,7 +29,8 @@ public class SecurityConfig {
                         pr +"parameters/**", pr +"devices/**",
                         pr +"device-types", pr +"phones/**",
                         pr +"sessions/**", pr +"approximated/**",
-                        pr +"greet/**", pr +"popups").permitAll()
+                        pr +"greet/**", pr +"popups",
+                        "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.POST,pr+"**").hasAnyAuthority("SAT_OPERATOR", "SAT_ADMIN", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE,pr+"**").hasAnyAuthority("SAT_ADMIN", "ADMIN")
                 .and()

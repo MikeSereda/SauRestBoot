@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan(basePackages = {"ru.sereda.saurestboot"})
 @EnableTransactionManagement
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = {"classpath:application.yml"})
 public class Config {
     @Value("${spring.datasource.url}")
     String datasourceUrl;
