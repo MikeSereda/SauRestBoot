@@ -1,10 +1,12 @@
 spring:
+  application:
+    name: SauRestBoot
   datasource:
     url: jdbc:postgresql://${DB_HOSTNAME:localhost}:${DB_PORT:5432}/${DB_NAME:askerv2}
     username: ${DB_USERNAME:admin}
     password: ${DB_USERNAME:admin}
 server:
-  port: ${SAU_PORT:7000}
+  port: ${SAU_PORT:0}
 dashboard:
   limit: 600
 sql:
@@ -13,3 +15,7 @@ sql:
       limit: 500
       protect: false
       interval: 00:00:09
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7003/eureka
