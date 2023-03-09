@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOSTNAME:localhost}:${DB_PORT:5432}/${DB_NAME:askerv2}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_USERNAME:admin}
+server:
+  port: ${SAU_PORT:7000}
+dashboard:
+  limit: 600
+sql:
+  parameters:
+    parameterset:
+      limit: 500
+      protect: false
+      interval: 00:00:09
