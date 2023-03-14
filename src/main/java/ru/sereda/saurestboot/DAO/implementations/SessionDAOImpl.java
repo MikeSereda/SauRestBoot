@@ -28,9 +28,9 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public List<Session> getSessions(String modemId, LocalDateTime startTime) {
         String sql = """
-                SELECT modem_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT modem_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY modem_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND modem_id=? AND timestamp_wotz>=? ORDER BY start_time
+                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
+                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
+                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND device_id=? AND timestamp_wotz>=? ORDER BY start_time
                 """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, modemId, startTime);
         List<Session> sessions = new ArrayList<>();
@@ -43,9 +43,9 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public List<Session> getSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
         String sql = """
-                SELECT modem_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT modem_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY modem_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND modem_id=? AND timestamp_wotz>=? AND timestamp_wotz+lead<=? ORDER BY start_time
+                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
+                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
+                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND device_id=? AND timestamp_wotz>=? AND timestamp_wotz+lead<=? ORDER BY start_time
                 """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, modemId, startTime, endTime);
         List<Session> sessions = new ArrayList<>();
@@ -58,8 +58,8 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public List<Session> getSessions(LocalDateTime startTime) {
         String sql = """
-                SELECT modem_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT modem_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY modem_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
+                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
+                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
                 FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND timestamp_wotz>=? ORDER BY start_time
                 """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, startTime);
@@ -73,8 +73,8 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public List<Session> getSessions(LocalDateTime startTime, LocalDateTime endTime) {
         String sql = """
-                SELECT modem_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT modem_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY modem_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
+                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
+                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
                 FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND timestamp_wotz>=? AND timestamp_wotz+lead<=? ORDER BY start_time
                 """;
         List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, startTime, endTime);

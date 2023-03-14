@@ -35,7 +35,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE device_id=?
                     AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -44,7 +44,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             mapper = new DeviceParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT * FROM parameters WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<?
+                    SELECT * FROM parameters WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<?
                     ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -65,7 +65,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             mapper = new DeviceReducedParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE modem_id=?
+                    SELECT timestamp_wotz, eb_no, eb_no_remote FROM parameters WHERE device_id=?
                     AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -74,7 +74,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             mapper = new DeviceParameterSetMapper();
             sql = """
                     SELECT * FROM(
-                    SELECT * FROM parameters WHERE modem_id=? AND timestamp_wotz>?
+                    SELECT * FROM parameters WHERE device_id=? AND timestamp_wotz>?
                     ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -91,7 +91,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             sql = """
                     WITH counted_table AS
                         (SELECT timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
-                        WHERE modem_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
+                        WHERE device_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
         }
@@ -100,7 +100,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             sql = """
                     WITH counted_table AS
                         (SELECT *, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
-                        WHERE modem_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
+                        WHERE device_id=? AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
         }
@@ -116,7 +116,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             sql = """
                     WITH counted_table AS
                         (SELECT timestamp_wotz, eb_no, eb_no_remote, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
-                        WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
+                        WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
         }
@@ -125,7 +125,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
             sql = """
                     WITH counted_table AS
                         (SELECT *, ROW_NUMBER() OVER (ORDER BY timestamp_wotz) AS row_num FROM parameters
-                        WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
+                        WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?)
                     SELECT * from counted_table WHERE row_num % ? = 0 ORDER BY timestamp_wotz LIMIT ?;
                     """;
         }
@@ -134,13 +134,13 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
 
     @Override
     public int parameterSetCount(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
-        String sql = "SELECT count(*) FROM parameters WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<?";
+        String sql = "SELECT count(*) FROM parameters WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<?";
         return jdbcTemplate.queryForObject(sql,int.class,modemId,startTime,endTime);
     }
 
     @Override
     public int parameterSetCount(String modemId, LocalDateTime startTime) {
-        String sql = "SELECT count(*) FROM parameters WHERE modem_id=? AND timestamp_wotz>?";
+        String sql = "SELECT count(*) FROM parameters WHERE device_id=? AND timestamp_wotz>?";
         return jdbcTemplate.queryForObject(sql,int.class,modemId,startTime);
     }
 
@@ -177,7 +177,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
 
     @Override
     public LocalDateTime getLastUpdateTime(String modemId) {
-        String sql = "SELECT timestamp_wotz FROM parameters WHERE modem_id=? ORDER BY timestamp_wotz DESC LIMIT 1;";
+        String sql = "SELECT timestamp_wotz FROM parameters WHERE device_id=? ORDER BY timestamp_wotz DESC LIMIT 1;";
         return jdbcTemplate.queryForObject(sql,LocalDateTime.class,modemId);
     }
 
@@ -191,7 +191,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
                     SELECT"""+
                 requiredValues
                     +"""
-                    FROM parameters WHERE modem_id=? AND timestamp_wotz>? AND timestamp_wotz<?
+                    FROM parameters WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<?
                     ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;
@@ -207,7 +207,7 @@ public class ParameterSetDAOImpl implements ParameterSetDAO {
                     SELECT"""+
                 requiredValues
                 +"""
-                    FROM parameters WHERE modem_id=? AND timestamp_wotz>?
+                    FROM parameters WHERE device_id=? AND timestamp_wotz>?
                     ORDER BY timestamp_wotz DESC LIMIT ?
                     ) AS T ORDER BY timestamp_wotz
                     """;

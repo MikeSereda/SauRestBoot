@@ -25,7 +25,7 @@ public class DeltasSetDAOImpl {
         DeltasSetMapper mapper = new DeltasSetMapper();
         sql = """
             SELECT * FROM(
-            SELECT timestamp_wotz, eb_no_delta, eb_no_remote_delta FROM parameters WHERE modem_id=?
+            SELECT timestamp_wotz, eb_no_delta, eb_no_remote_delta FROM parameters WHERE device_id=?
             AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz DESC LIMIT ?
             ) AS T ORDER BY timestamp_wotz
             """;
@@ -42,7 +42,7 @@ public class DeltasSetDAOImpl {
         DeltasSetMapper mapper = new DeltasSetMapper();
         sql = """
             SELECT * FROM(
-            SELECT timestamp_wotz, eb_no_delta, eb_no_remote_delta FROM parameters WHERE modem_id=?
+            SELECT timestamp_wotz, eb_no_delta, eb_no_remote_delta FROM parameters WHERE device_id=?
             AND timestamp_wotz>? ORDER BY timestamp_wotz DESC LIMIT ?
             ) AS T ORDER BY timestamp_wotz
             """;
