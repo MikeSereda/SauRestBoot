@@ -7,6 +7,7 @@ spring:
     password: ${DB_USERNAME:admin}
 server:
   port: ${SAU_PORT:0}
+  forward-headers-strategy: framework
 dashboard:
   limit: 600
 sql:
