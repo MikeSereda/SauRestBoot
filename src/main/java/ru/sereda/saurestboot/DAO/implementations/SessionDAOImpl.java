@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sereda.saurestboot.DAO.interfaces.SessionDAO;
 import ru.sereda.saurestboot.businesslogic.Session;
+import ru.sereda.saurestboot.rowmappers.SessionMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @Transactional
@@ -25,63 +24,27 @@ public class SessionDAOImpl implements SessionDAO {
     @Value("${sql.parameters.parameterset.interval}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime lag;
-    @Override
-    public List<Session> getSessions(String modemId, LocalDateTime startTime) {
-        String sql = """
-                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND device_id=? AND timestamp_wotz>=? ORDER BY start_time
-                """;
-        List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, modemId, startTime);
-        List<Session> sessions = new ArrayList<>();
-        for (Map<String,Object> map : maps){
-            sessions.add(Session.sessionWrapper(map));
-        }
-        return sessions;
-    }
+
+    // TODO: 10.04.2023
+    //      SELECT timestamp_wotz AS start_time, timestamp_wotz_lag AS end_time, timestamp_wotz_lag-timestamp_wotz AS duration, carrier FROM
+    //        (SELECT *, LAG(timestamp_wotz) over () as timestamp_wotz_lag FROM
+    //            (SELECT timestamp_wotz, eb_no, lag(carrier) over () as carrier FROM public.parameters
+    //             WHERE device_id='cdm111' AND timestamp_wotz<'2023-04-10 07:57:45' AND timestamp_wotz>'2023-04-01 04:05:05' ORDER BY timestamp_wotz desc)
+    //        as T WHERE T.eb_no<0)
+    //      AS D WHERE timestamp_wotz_lag-timestamp_wotz>'00:00:30'
+    //  Запрос на получение сеансов
 
     @Override
     public List<Session> getSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
-        String sql = """
-                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND device_id=? AND timestamp_wotz>=? AND timestamp_wotz+lead<=? ORDER BY start_time
-                """;
-        List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, modemId, startTime, endTime);
-        List<Session> sessions = new ArrayList<>();
-        for (Map<String,Object> map : maps){
-            sessions.add(Session.sessionWrapper(map));
-        }
-        return sessions;
-    }
-
-    @Override
-    public List<Session> getSessions(LocalDateTime startTime) {
-        String sql = """
-                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND timestamp_wotz>=? ORDER BY start_time
-                """;
-        List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, startTime);
-        List<Session> sessions = new ArrayList<>();
-        for (Map<String,Object> map : maps){
-            sessions.add(Session.sessionWrapper(map));
-        }
-        return sessions;
-    }
-
-    @Override
-    public List<Session> getSessions(LocalDateTime startTime, LocalDateTime endTime) {
-        String sql = """
-                SELECT device_id,  timestamp_wotz as start_time, timestamp_wotz + lead as end_time, lead as duration FROM (
-                SELECT device_id, timestamp_wotz, lead(timestamp_wotz)OVER(PARTITION BY device_id ORDER BY timestamp_wotz) -timestamp_wotz as lead
-                FROM parameters WHERE eb_no<'0' ORDER BY timestamp_wotz) AS T WHERE lead>? AND timestamp_wotz>=? AND timestamp_wotz+lead<=? ORDER BY start_time
-                """;
-        List<Map<String,Object>> maps = jdbcTemplate.queryForList(sql, lag, startTime, endTime);
-        List<Session> sessions = new ArrayList<>();
-        for (Map<String,Object> map : maps){
-            sessions.add(Session.sessionWrapper(map));
-        }
-        return sessions;
+        String sql =
+        """
+        SELECT timestamp_wotz AS start_time, timestamp_wotz_lag AS end_time, timestamp_wotz_lag-timestamp_wotz AS duration, carrier FROM
+        (SELECT *, LAG(timestamp_wotz) over () as timestamp_wotz_lag FROM
+            (SELECT timestamp_wotz, eb_no, lag(carrier) over () as carrier FROM public.parameters
+                WHERE device_id=? AND timestamp_wotz>? AND timestamp_wotz<? ORDER BY timestamp_wotz desc)
+            as T WHERE T.eb_no<0)
+        AS D WHERE timestamp_wotz_lag-timestamp_wotz>?
+        """;
+        return jdbcTemplate.query(sql,new SessionMapper(),modemId, startTime, endTime, lag);
     }
 }

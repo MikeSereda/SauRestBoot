@@ -2,7 +2,7 @@ spring:
   application:
     name: SauRestBoot
   datasource:
-    url: jdbc:postgresql://${DB_HOSTNAME:localhost}:${DB_PORT:5432}/${DB_NAME:sau_rest_2023}
+    url: jdbc:postgresql://${DB_HOSTNAME:192.168.100.1}:${DB_PORT:5432}/${DB_NAME:sau_rest_2023}
     username: ${DB_USERNAME:admin}
     password: ${DB_USERNAME:admin}
 server:
@@ -13,10 +13,10 @@ dashboard:
 sql:
   parameters:
     parameterset:
-      limit: 500
+      limit: 3000
       protect: false
-      interval: 00:00:09
+      interval: 00:00:30
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:7003/eureka
+      defaultZone: http://192.168.100.1:7003/eureka

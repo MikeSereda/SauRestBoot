@@ -9,7 +9,6 @@ import ru.sereda.saurestboot.service.interfaces.DeviceService;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class DevicesController {

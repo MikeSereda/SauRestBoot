@@ -9,7 +9,6 @@ import ru.sereda.saurestboot.service.interfaces.PhoneService;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class PhoneController {

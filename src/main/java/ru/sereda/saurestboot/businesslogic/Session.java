@@ -2,22 +2,26 @@ package ru.sereda.saurestboot.businesslogic;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
+import static java.lang.Math.abs;
+
 public class Session {
-    private final String deviceType;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
+    private final long duratonHours;
+    private final long duratonMinutes;
+    private final byte carrierState;
 
-    public Session(String deviceType, LocalDateTime startTime, LocalDateTime endTime) {
-        this.deviceType = deviceType;
-        this.startTime = startTime.truncatedTo(ChronoUnit.SECONDS);
-        this.endTime = endTime.truncatedTo(ChronoUnit.SECONDS);
-    }
-
-    public String getDeviceType() {
-        return deviceType;
+    public Session(LocalDateTime startTime, LocalDateTime endTime, long duratonMinutes, byte carrierState) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        duratonMinutes = abs(duratonMinutes);
+        this.duratonHours = duratonMinutes/60;
+        this.duratonMinutes = duratonMinutes-(duratonHours*60);
+        this.carrierState = carrierState;
     }
 
     public LocalDateTime getStartTime() {
@@ -28,11 +32,17 @@ public class Session {
         return endTime;
     }
 
-    public static Session sessionWrapper(Map<String,Object> map){
-        return new Session(
-                (String)map.get("modem_id"),
-                ((Timestamp)map.get("start_time")).toLocalDateTime(),
-                ((Timestamp)map.get("end_time")).toLocalDateTime()
-        );
+    public String getDuration(){
+        StringBuilder duration = new StringBuilder();
+        duration.append(duratonHours);
+        duration.append(":");
+        if (duratonMinutes<10)
+            duration.append("0");
+        duration.append(duratonMinutes);
+        return duration.toString();
+    }
+
+    public byte getCarrierState() {
+        return carrierState;
     }
 }

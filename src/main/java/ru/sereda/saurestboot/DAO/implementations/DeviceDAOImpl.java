@@ -56,7 +56,7 @@ public class DeviceDAOImpl implements DeviceDAO {
     }
 
     public List<Device> getDevices(){
-        String sql = "SELECT * FROM devices";
+        String sql = "SELECT * FROM public.devices ORDER BY id";
         List<Device> devices = jdbcTemplate.query(sql, new DeviceMapperImpl());
         return devices;
     }
