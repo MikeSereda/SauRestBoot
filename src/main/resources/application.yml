@@ -13,9 +13,9 @@ dashboard:
 sql:
   parameters:
     parameterset:
-      limit: 3000
+      limit: 4000
       protect: false
-      interval: 00:00:30
+      interval: 00:01:01
 eureka:
   client:
     service-url:

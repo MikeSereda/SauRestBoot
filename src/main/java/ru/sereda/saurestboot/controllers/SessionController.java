@@ -16,7 +16,7 @@ public class SessionController {
     SessionService sessionService;
 
     @GetMapping("/sessions")
-    public Map<String, List<Session>> getSessions(
+    public List<Session> getSessions(
             @RequestParam(name = "startTime", required = false, defaultValue = "") String startTime,
             @RequestParam(name = "endTime", required = false, defaultValue = "") String endTime,
             @RequestParam(name = "deviceId", required = false, defaultValue = "") String deviceId) {

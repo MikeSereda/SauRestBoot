@@ -8,12 +8,14 @@ import java.util.Map;
 
 import static java.lang.Math.abs;
 
-public class Session {
+public class Session implements Comparable<Session>{
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
     private final long duratonHours;
     private final long duratonMinutes;
     private final byte carrierState;
+
+    private String deviceId;
 
     public Session(LocalDateTime startTime, LocalDateTime endTime, long duratonMinutes, byte carrierState) {
         this.startTime = startTime;
@@ -44,5 +46,18 @@ public class Session {
 
     public byte getCarrierState() {
         return carrierState;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    @Override
+    public int compareTo(Session o) {
+        return (int) ChronoUnit.MINUTES.between(this.startTime,o.startTime);
     }
 }
