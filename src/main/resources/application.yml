@@ -13,7 +13,7 @@ dashboard:
 sql:
   parameters:
     parameterset:
-      limit: 4000
+      limit: 40000
       protect: false
       interval: 00:01:01
 eureka:

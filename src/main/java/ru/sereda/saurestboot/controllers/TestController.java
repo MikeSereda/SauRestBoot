@@ -10,7 +10,7 @@ import ru.sereda.saurestboot.service.interfaces.SessionService;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/test")
 public class TestController {
     @Autowired
     SessionService sessionService;
@@ -32,5 +32,10 @@ public class TestController {
     @GetMapping("/approximated")
     public Map<String,List<Session>> approximated(){
         return null;
+    }
+
+    @GetMapping("/mixedSessions")
+    public List<Session> getMixedSessions(){
+        return sessionService.getMixedSessions("cdm111","2023-04-17T00:00:00","2023-04-21T00:00:00");
     }
 }

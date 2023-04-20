@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SessionDAO {
     List<Session> getSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime);
+    List<Session> getOnlySavedSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime);
 }

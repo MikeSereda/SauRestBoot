@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sereda.saurestboot.DAO.interfaces.SessionDAO;
 import ru.sereda.saurestboot.businesslogic.Session;
+import ru.sereda.saurestboot.rowmappers.SavedSessionRowMapper;
 import ru.sereda.saurestboot.rowmappers.SessionMapper;
 
 import java.time.LocalDateTime;
@@ -37,5 +38,15 @@ public class SessionDAOImpl implements SessionDAO {
         AS D WHERE timestamp_wotz_lag-timestamp_wotz>?
         """;
         return jdbcTemplate.query(sql,new SessionMapper(),modemId, startTime, endTime, lag);
+    }
+
+    @Override
+    public List<Session> getOnlySavedSessions(String modemId, LocalDateTime startTime, LocalDateTime endTime) {
+        String sql =
+                """
+                    SELECT * FROM public.saved_sessions WHERE start_time>? and end_time<? and displaying=true
+                    and device_id=? ORDER BY start_time
+                """;
+        return jdbcTemplate.query(sql,new SavedSessionRowMapper(), startTime, endTime, modemId);
     }
 }

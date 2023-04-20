@@ -32,7 +32,7 @@ public class SecurityConfig {
                         pr +"sessions/**", pr +"approximated/**",
                         pr +"greet/**", pr +"popups",
                         "/swagger-ui/**", "/v3/api-docs/**",
-                        pr+"test", pr+"test2", pr+"test3", pr+"test4").permitAll()
+                        pr+"test/**").permitAll()
                 .requestMatchers(HttpMethod.POST,pr+"**").hasAnyAuthority("SAT_OPERATOR", "SAT_ADMIN", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE,pr+"**").hasAnyAuthority("SAT_ADMIN", "ADMIN")
                 .and()
