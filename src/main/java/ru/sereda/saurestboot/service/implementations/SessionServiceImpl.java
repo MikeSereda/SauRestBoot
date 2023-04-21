@@ -87,11 +87,13 @@ public class SessionServiceImpl implements SessionService {
         List<Session> savedSessions = sessionDAO.getOnlySavedSessions(modemId,requiredStartTime,requiredEndTime);
         List<Session> mixedSessions = new ArrayList<>();
         for (Session sessionForCheck : sessionDAO.getSessions(modemId,requiredStartTime,requiredEndTime)){
-            boolean needToAdd = false;
+            boolean containsAtLeastOnce = false;
             for (Session mainSession : savedSessions){
-                needToAdd=needToAdd||mainSession.containsThisTime(sessionForCheck);
+                containsAtLeastOnce=mainSession.containsThisTime(sessionForCheck);
+                if (containsAtLeastOnce)
+                    break;
             }
-            if (!needToAdd)
+            if (!containsAtLeastOnce)
                 mixedSessions.add(sessionForCheck);
         }
         mixedSessions.addAll(savedSessions);
